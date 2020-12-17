@@ -1,7 +1,7 @@
 # GitHub Actions Workflow to build FreeRTOS Firmware for PineTime Smart Watch
 # See https://lupyuen.github.io/pinetime-rust-mynewt/articles/cloud
 # Based on https://github.com/JF002/Pinetime/blob/master/doc/buildAndProgram.md
-# and https://github.com/JF002/Pinetime/blob/master/bootloader/README.md
+# and https://github.com/JF002/Pinetime/blob/master/bootloader/README.md 
 
 # Name of this Workflow
 name: Build PineTime Firmware
@@ -11,16 +11,17 @@ on:
 
   # Run this Workflow when files are updated (Pushed) in the "master" Branch
   push:
-    branches: [ master ]
+    branches: [ develop ]
 
   # Also run this Workflow when a Pull Request is created or updated in the "master" Branch
   pull_request:
-    branches: [ master ]
+    branches: [ develop ]
 
 # Steps to run for the Workflow
 jobs:
   build:
-
+    env:
+     ACTIONS_ALLOW_UNSECURE_COMMANDS: true
     # Run these steps on Ubuntu
     runs-on: ubuntu-latest
 
@@ -43,10 +44,14 @@ jobs:
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}
 
       - name: Install Embedded Arm Toolchain arm-none-eabi-gcc
-        run:  |
-          URL=https://developer.arm.com/-/media/Files/downloads/gnu-rm/9-2020q2/gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz
-          wget -qO - "$URL" | tar -xj -C ${{ runner.temp }}
-          mv ${{ runner.temp }}/gcc-arm-none-eabi-* ${{ runner.temp }}/arm-none-eabi # rename extracted folder
+        if:   steps.cache-toolchain.outputs.cache-hit != 'true'  # Install toolchain if not found in cache
+        uses: fiam/arm-none-eabi-gcc@v1.0.2
+        with:
+          # GNU Embedded Toolchain for Arm release name, in the V-YYYY-qZ format (e.g. "9-2019-q4")
+          release: 9-2020-q2
+          # Directory to unpack GCC to. Defaults to a temporary directory.
+          directory: ${{ runner.temp }}/arm-none-eabi
+
       - name: Check cache for nRF5 SDK
         id:   cache-nrf5sdk
         uses: actions/cache@v2
