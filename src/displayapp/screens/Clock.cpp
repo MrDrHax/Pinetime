@@ -51,9 +51,14 @@ Clock::Clock(DisplayApp* app,
   lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(false));
   lv_obj_align(notificationIcon, nullptr, LV_ALIGN_IN_TOP_LEFT, 10, 0);
 
-  label_date = lv_label_create(lv_scr_act(), nullptr);
+  label_AMPM = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_align(label_AMPM, lv_scr_act(), LV_ALIGN_IN_RIGHT_MID, 0, 60);
 
-  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 60);
+  label_date = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, -60);
+
+  label_date2 = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_align(label_date2, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 60);
 
   label_time = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
@@ -125,7 +130,7 @@ bool Clock::Refresh() {
 
   currentDateTime = dateTimeController.CurrentDateTime();
 
-  if(currentDateTime.IsUpdated()) {
+  if(currentDateTime.IsUpdated()) { // update to date and time
     auto newDateTime = currentDateTime.Get();
 
     auto dp = date::floor<date::days>(newDateTime);
@@ -143,6 +148,13 @@ bool Clock::Refresh() {
     char minutesChar[3];
     sprintf(minutesChar, "%02d", static_cast<int>(minute));
 
+    if (hour > 12){ // AM PM function
+      hour -= 12;
+      lv_label_set_text(label_AMPM, "PM");
+    }
+    else{
+      lv_label_set_text(label_AMPM, "AM");
+    }
     char hoursChar[3];
     sprintf(hoursChar, "%02d", static_cast<int>(hour));
 
@@ -159,9 +171,12 @@ bool Clock::Refresh() {
     }
 
     if ((year != currentYear) || (month != currentMonth) || (dayOfWeek != currentDayOfWeek) || (day != currentDay)) {
-      char dateStr[22];
-      sprintf(dateStr, "%s %d %s %d", DayOfWeekToString(dayOfWeek), day, MonthToString(month), year);
-      lv_label_set_text(label_date, dateStr);
+      char dateStr[7];
+      char dateStr2[7];
+      sprintf(dateStr , "%s %d", DayOfWeekToString(dayOfWeek), day);
+      sprintf(dateStr2, "%s %d", MonthToString(month), year);
+      lv_label_set_text(label_date , dateStr );
+      lv_label_set_text(label_date2, dateStr2);
 
 
       currentYear = year;
@@ -203,13 +218,13 @@ const char *Clock::DayOfWeekToString(Pinetime::Controllers::DateTime::Days dayOf
 
 char const *Clock::DaysString[] = {
         "",
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
+        "MON",
+        "TUE",
+        "WED",
+        "THU",
+        "FRI",
+        "SAT",
+        "SUN"
 };
 
 char const *Clock::MonthsString[] = {
