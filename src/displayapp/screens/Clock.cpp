@@ -52,7 +52,7 @@ Clock::Clock(DisplayApp* app,
   lv_obj_align(notificationIcon, nullptr, LV_ALIGN_IN_TOP_LEFT, 10, 0);
 
   label_AMPM = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(label_AMPM, lv_scr_act(), LV_ALIGN_IN_RIGHT_MID, 0, 60);
+  lv_obj_align(label_AMPM, lv_scr_act(), LV_ALIGN_IN_RIGHT_MID, 0, 50);
 
   label_date = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, -60);
@@ -87,7 +87,7 @@ Clock::Clock(DisplayApp* app,
   lv_obj_align(heartbeatBpm, heartbeatValue, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
 
   stepValue = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(stepValue, "0");
+  lv_label_set_text(stepValue, "bb");
   lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, -5, -2);
 
   stepIcon = lv_label_create(lv_scr_act(), nullptr);
