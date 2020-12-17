@@ -1,3 +1,0 @@
-[submodule "src/libs/lvgl"]
-	path = src/libs/lvgl
-	url = https://github.com/joaquimorg/lvgl.git

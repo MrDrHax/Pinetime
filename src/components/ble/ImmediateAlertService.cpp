@@ -71,7 +71,7 @@ int ImmediateAlertService::OnAlertLevelChanged(uint16_t connectionHandle, uint16
 
       NotificationManager::Notification notif;
       std::memcpy(notif.message.data(), alertString, strlen(alertString));
-      notif.category = Pinetime::Controllers::NotificationManager::Categories::Unknown;
+      notif.category = Pinetime::Controllers::NotificationManager::Categories::SimpleAlert;
       notificationManager.Push(std::move(notif));
 
       systemTask.PushMessage(Pinetime::System::SystemTask::Messages::OnNewNotification);

@@ -9,7 +9,7 @@ namespace Pinetime {
   namespace Controllers {
     class NotificationManager {
       public:
-        enum class Categories {Unknown, Email, IncomingCall, MissedCall, Sms, Schedule, InstantMessage};
+        enum class Categories {Unknown, SimpleAlert, Email, News, IncomingCall, MissedCall, Sms, VoiceMail, Schedule, HighProriotyAlert, InstantMessage };
         static constexpr uint8_t MessageSize{100};
 
         struct Notification {
@@ -17,14 +17,6 @@ namespace Pinetime {
           Id id;
           bool valid = false;
           uint8_t index;
-          uint8_t alertID;
-          std::array<char, 5> year;
-          std::array<char, 3> month;
-          std::array<char, 3> day;
-          std::array<char, 3> hour;
-          std::array<char, 3> minute;
-          std::array<char, 3> second;
-          std::array<char, 50> subject;
           std::array<char, MessageSize+1> message;
           Categories category = Categories::Unknown;
         };
@@ -36,7 +28,7 @@ namespace Pinetime {
       Notification GetPrevious(Notification::Id id);
       bool ClearNewNotificationFlag();
       bool AreNewNotificationsAvailable();
-      
+
       static constexpr size_t MaximumMessageSize() { return MessageSize; };
       size_t NbNotifications() const;
 

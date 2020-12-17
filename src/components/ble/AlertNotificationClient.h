@@ -2,6 +2,8 @@
 
 #include <cstdint>
 #include <functional>
+#define min // workaround: nimble's min/max macros conflict with libstdc++
+#define max
 #include <host/ble_gap.h>
 #undef max
 #undef min

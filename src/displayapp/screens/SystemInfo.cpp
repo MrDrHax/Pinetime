@@ -8,7 +8,6 @@
 #include "components/brightness/BrightnessController.h"
 #include "components/datetime/DateTimeController.h"
 #include "drivers/Watchdog.h"
-#include "drivers/BMA421.h"
 
 using namespace Pinetime::Applications::Screens;
 
@@ -17,20 +16,15 @@ SystemInfo::SystemInfo(Pinetime::Applications::DisplayApp *app,
                        Pinetime::Controllers::Battery& batteryController,
                        Pinetime::Controllers::BrightnessController& brightnessController,
                        Pinetime::Controllers::Ble& bleController,
-                       Pinetime::Drivers::WatchdogView& watchdog,
-                       Pinetime::Drivers::BMA421& stepCounter) :
+                       Pinetime::Drivers::WatchdogView& watchdog) :
         Screen(app),
         dateTimeController{dateTimeController}, batteryController{batteryController},
         brightnessController{brightnessController}, bleController{bleController}, watchdog{watchdog},
-        stepCounter{stepCounter},
-        screens{app, 
-          0,
-          {
+        screens{app, {
                 [this]() -> std::unique_ptr<Screen> { return CreateScreen1(); },
                 [this]() -> std::unique_ptr<Screen> { return CreateScreen2(); },
                 [this]() -> std::unique_ptr<Screen> { return CreateScreen3(); }
-          },
-          Screens::ScreenListModes::UpDown
+          }
         } {}
 
 
@@ -59,10 +53,8 @@ std::unique_ptr<Screen> SystemInfo::CreateScreen1() {
   switch(brightnessController.Level()) {
     case Controllers::BrightnessController::Levels::Off: brightness = 0; break;
     case Controllers::BrightnessController::Levels::Low: brightness = 1; break;
-    case Controllers::BrightnessController::Levels::LowMedium: brightness = 2; break;
-    case Controllers::BrightnessController::Levels::Medium: brightness = 3; break;
-    case Controllers::BrightnessController::Levels::MediumHigh: brightness = 4; break;
-    case Controllers::BrightnessController::Levels::High: brightness = 5; break;
+    case Controllers::BrightnessController::Levels::Medium: brightness = 2; break;
+    case Controllers::BrightnessController::Levels::High: brightness = 3; break;
   }
   auto resetReason = [this]() {
     switch (watchdog.ResetReason()) {
@@ -100,31 +92,22 @@ std::unique_ptr<Screen> SystemInfo::CreateScreen1() {
               "Time: %02d:%02d:%02d\n"
               "Uptime: %02lud %02lu:%02lu:%02lu\n"
               "Battery: %d%%\n"
-              "Backlight: %d/5\n"
+              "Backlight: %d/3\n"
               "Last reset: %s\n",
           Version::Major(), Version::Minor(), Version::Patch(),
           __DATE__, __TIME__,
           dateTimeController.Day(), static_cast<uint8_t>(dateTimeController.Month()), dateTimeController.Year(),
           dateTimeController.Hours(), dateTimeController.Minutes(), dateTimeController.Seconds(),
           uptimeDays, uptimeHours, uptimeMinutes, uptimeSeconds,
-          (int) batteryPercent, brightness, resetReason);
+          batteryPercent, brightness, resetReason);
 
   return std::unique_ptr<Screen>(new Screens::Label(app, t1));
 }
 
 std::unique_ptr<Screen> SystemInfo::CreateScreen2() {
   auto& bleAddr = bleController.Address();
-  sprintf(t2, "BLE MAC: \n  %02x:%02x:%02x:%02x:%02x:%02x"
-              "\n"
-              "Free heap: %d"
-              "\n"
-              "Steps: %li",
-          bleAddr[5], bleAddr[4], bleAddr[3], bleAddr[2], bleAddr[1], bleAddr[0],
-          xPortGetFreeHeapSize(),
-          stepCounter.GetSteps()
-          );
-
-  
+  sprintf(t2, "BLE MAC: \n  %02x:%02x:%02x:%02x:%02x:%02x",
+          bleAddr[5], bleAddr[4], bleAddr[3], bleAddr[2], bleAddr[1], bleAddr[0]);
   return std::unique_ptr<Screen>(new Screens::Label(app, t2));
 }
 

@@ -3,7 +3,6 @@
 #include <libraries/delay/nrf_delay.h>
 #include <nrfx_log.h>
 #include "Spi.h"
-#include "board_config.h"
 
 using namespace Pinetime::Drivers;
 
@@ -15,8 +14,8 @@ St7789::St7789(Spi &spi, uint8_t pinDataCommand) : spi{spi}, pinDataCommand{pinD
 void St7789::Init() {
   spi.Init();
   nrf_gpio_cfg_output(pinDataCommand);
-  nrf_gpio_cfg_output(LCD_RST);
-  nrf_gpio_pin_set(LCD_RST);
+  nrf_gpio_cfg_output(26);
+  nrf_gpio_pin_set(26);
   HardwareReset();
   SoftwareReset();
   SleepOut();
@@ -27,8 +26,6 @@ void St7789::Init() {
   DisplayInversionOn();
   NormalModeOn();
   DisplayOn();
-  VerticalScrollDefinition(0, 320, 0);
-  VerticalScrollStartAddress(0);
 }
 
 void St7789::WriteCommand(uint8_t cmd) {
@@ -53,12 +50,10 @@ void St7789::SoftwareReset() {
 
 void St7789::SleepOut() {
   WriteCommand(static_cast<uint8_t>(Commands::SleepOut));
-  nrf_delay_ms(10);
 }
 
 void St7789::SleepIn() {
   WriteCommand(static_cast<uint8_t>(Commands::SleepIn));
-  nrf_delay_ms(10);
 }
 
 void St7789::ColMod() {
@@ -172,33 +167,30 @@ void St7789::NextDrawBuffer(const uint8_t *data, size_t size) {
 }
 
 void St7789::HardwareReset() {
-  nrf_gpio_pin_clear(LCD_RST);
+  nrf_gpio_pin_clear(26);
   nrf_delay_ms(10);
-  nrf_gpio_pin_set(LCD_RST);
+  nrf_gpio_pin_set(26);
 }
 
 void St7789::Sleep() {
   SleepIn();
-  nrf_delay_ms(50);
-  //nrf_gpio_cfg_default(pinDataCommand);
+  nrf_gpio_cfg_default(pinDataCommand);
   NRF_LOG_INFO("[LCD] Sleep");
 }
 
 void St7789::Wakeup() {
-  //nrf_gpio_cfg_output(pinDataCommand);
+  nrf_gpio_cfg_output(pinDataCommand);
   // TODO why do we need to reset the controller?
-  //HardwareReset();
-  //SoftwareReset();
+  HardwareReset();
+  SoftwareReset();
   SleepOut();
-  nrf_delay_ms(50);
-  //ColMod();
-  //MemoryDataAccessControl();
-  //ColumnAddressSet();
-  //RowAddressSet();
-  //DisplayInversionOn();
-  //NormalModeOn();
-  VerticalScrollDefinition(0, 320, 0);
+  ColMod();
+  MemoryDataAccessControl();
+  ColumnAddressSet();
+  RowAddressSet();
+  DisplayInversionOn();
+  NormalModeOn();
   VerticalScrollStartAddress(verticalScrollingStartAddress);
-  //DisplayOn();
+  DisplayOn();
   NRF_LOG_INFO("[LCD] Wakeup")
 }

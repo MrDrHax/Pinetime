@@ -16,11 +16,6 @@
 #include "displayapp/screens/Notifications.h"
 #include "displayapp/screens/SystemInfo.h"
 #include "displayapp/screens/Tile.h"
-#include "displayapp/screens/FileManager.h"
-#include "displayapp/screens/Settings.h"
-#include "displayapp/screens/Steps.h"
-#include "displayapp/screens/HeartRate.h"
-#include "displayapp/screens/ScreensTemplate.h"
 #include "drivers/Cst816s.h"
 #include "drivers/St7789.h"
 #include "drivers/Watchdog.h"
@@ -30,29 +25,22 @@ using namespace Pinetime::Applications;
 
 DisplayApp::DisplayApp(Drivers::St7789 &lcd, Components::LittleVgl &lvgl, Drivers::Cst816S &touchPanel,
                        Controllers::Battery &batteryController, Controllers::Ble &bleController,
-                       Controllers::DateTime &dateTimeController, Drivers::WatchdogView &watchdog,                       
-                       Controllers::Settings &settingsController,
-                       Drivers::BMA421 &stepCounter,
-                       Drivers::HRS3300 &hrs,
+                       Controllers::DateTime &dateTimeController, Drivers::WatchdogView &watchdog,
                        System::SystemTask &systemTask,
-                       Pinetime::Controllers::NotificationManager &notificationManager) :
+                       Pinetime::Controllers::NotificationManager& notificationManager) :
         lcd{lcd},
         lvgl{lvgl},
-        touchPanel{touchPanel},
         batteryController{batteryController},
         bleController{bleController},
         dateTimeController{dateTimeController},
-        watchdog{watchdog},        
-        settingsController{settingsController},
-        stepCounter{stepCounter},
-        hrs{hrs},
+        watchdog{watchdog},
+        touchPanel{touchPanel},
+        currentScreen{new Screens::Clock(this, dateTimeController, batteryController, bleController, notificationManager) },
         systemTask{systemTask},
-        notificationManager{notificationManager},
-        currentScreen{new Screens::Clock(this, dateTimeController, batteryController, bleController, notificationManager, settingsController, stepCounter) }        
-{
+        notificationManager{notificationManager} {
   msgQueue = xQueueCreate(queueSize, itemSize);
   onClockApp = true;
-  //modal.reset(new Screens::Modal(this));
+  modal.reset(new Screens::Modal(this));
 }
 
 void DisplayApp::Start() {
@@ -69,9 +57,10 @@ void DisplayApp::Process(void *instance) {
   xTaskNotifyGive(xTaskGetCurrentTaskHandle());
 
   while (1) {
+
     app->Refresh();
+
   }
-  
 }
 
 void DisplayApp::InitHw() {
@@ -81,7 +70,6 @@ void DisplayApp::InitHw() {
 uint32_t acc = 0;
 uint32_t count = 0;
 bool toggle = true;
-
 void DisplayApp::Refresh() {
   TickType_t queueTimeout;
   switch (state) {
@@ -107,101 +95,52 @@ void DisplayApp::Refresh() {
           brightnessController.Lower();
           vTaskDelay(100);
         }
-        //lcd.DisplayOff();        
+        lcd.DisplayOff();
         systemTask.PushMessage(System::SystemTask::Messages::OnDisplayTaskSleeping);
         state = States::Idle;
-        onClockApp = false;
-        //currentScreen.reset(nullptr);
-      break;
-
+        break;
       case Messages::GoToRunning:
-        //if (state == States::Running) break;
-        //if(!onClockApp) {
-          onClockApp = true;
-          //lcd.DisplayOn();
+        lcd.DisplayOn();
+        brightnessController.Restore();
+        state = States::Running;
+        break;
+      case Messages::UpdateDateTime:
+//        modal->Show();
+        break;
+      case Messages::UpdateBleConnection:
+//        clockScreen.SetBleConnectionState(bleController.IsConnected() ? Screens::Clock::BleConnectionStates::Connected : Screens::Clock::BleConnectionStates::NotConnected);
+        break;
+      case Messages::UpdateBatteryLevel:
+//        clockScreen.SetBatteryPercentRemaining(batteryController.PercentRemaining());
+        break;
+      case Messages::NewNotification: {
+        if(onClockApp) {
           currentScreen.reset(nullptr);
-          currentScreen.reset(new Screens::Clock(this, dateTimeController, batteryController, bleController, notificationManager, settingsController, stepCounter));        
-        //}
-        //if (state != States::Running) {
-          brightnessController.Restore();
-          state = States::Running;
-        //}
-
-      break;
-
-      case Messages::NewCall:
-      break;
-
-      case Messages::NewNotification: 
-        
-        if (state == States::Running) {
+          lvgl.SetFullRefresh(Components::LittleVgl::FullRefreshDirections::Up);
           onClockApp = false;
-          lvgl.SetFullRefresh(Components::LittleVgl::FullRefreshDirections::Down);
-          currentScreen.reset(nullptr);
           currentScreen.reset(new Screens::Notifications(this, notificationManager, Screens::Notifications::Modes::Preview));
-        } else {
-          PushMessage(Messages::GoToRunning);
-          //PushMessage(Messages::NewNotification);
-          //PushMessage(Messages::NewNotification);
-          //onClockApp = false;
-          //currentScreen.reset(nullptr);
-          //currentScreen.reset(new Screens::Notifications(this, notificationManager, Screens::Notifications::Modes::Preview));
-          //brightnessController.Restore();
-          //state = States::Running;
         }
-                
-        //currentScreen.reset(new Screens::Clock(this, dateTimeController, batteryController, bleController, notificationManager, settingsController, stepCounter));        
-        /*
-        if (state != States::Running) {
-          brightnessController.Restore();
-          state = States::Running;
-        }*/
-        
-      break;
-
+      }
+        break;
       case Messages::TouchEvent: {
         if (state != States::Running) break;
         auto gesture = OnTouchEvent();
         if(!currentScreen->OnTouchEvent(gesture)) {
           switch (gesture) {
             case TouchEvents::SwipeUp:
-              if(onClockApp) {
-                onClockApp = false;
-                //currentScreen->OnButtonPushed();
-                lvgl.SetFullRefresh(Components::LittleVgl::FullRefreshDirections::Up);
-                currentScreen.reset(nullptr);
-                currentScreen.reset(new Screens::ApplicationList(this, dateTimeController, settingsController));
-              } else {
-                lvgl.SetFullRefresh(Components::LittleVgl::FullRefreshDirections::Up);
-                currentScreen->OnButtonPushed();
-              }
+              currentScreen->OnButtonPushed();
+              lvgl.SetFullRefresh(Components::LittleVgl::FullRefreshDirections::Up);
               break;
-            /*case TouchEvents::SwipeDown:
+            case TouchEvents::SwipeDown:
               currentScreen->OnButtonPushed();
               lvgl.SetFullRefresh(Components::LittleVgl::FullRefreshDirections::Down);
-              break;*/
-            case TouchEvents::SwipeDown:
-              if(!onClockApp) {
-                /*lvgl.SetFullRefresh(Components::LittleVgl::FullRefreshDirections::Down);
-                currentScreen.reset(nullptr);
-                currentScreen.reset(new Screens::Clock(this, dateTimeController, batteryController, bleController, notificationManager, settingsController, stepCounter));
-                onClockApp = true;*/
-                lvgl.SetFullRefresh(Components::LittleVgl::FullRefreshDirections::Down);
-                currentScreen->OnButtonPushed();
-              } else {
-                onClockApp = false;
-                lvgl.SetFullRefresh(Components::LittleVgl::FullRefreshDirections::Down);
-                currentScreen.reset(nullptr);
-                currentScreen.reset(new Screens::Notifications(this, notificationManager, Screens::Notifications::Modes::Clock));
-              }
               break;
             default:
               break;
           }
         }
       }
-      break;
-      
+        break;
       case Messages::ButtonPushed:
         if(onClockApp)
             systemTask.PushMessage(System::SystemTask::Messages::GoToSleep);
@@ -213,27 +152,25 @@ void DisplayApp::Refresh() {
               lvgl.SetFullRefresh(Components::LittleVgl::FullRefreshDirections::Up);
           }
         }
-      break;
 
+//        lvgl.SetFullRefresh(components::LittleVgl::FullRefreshDirections::Down);
+//        currentScreen.reset(nullptr);
+//        if(toggle) {
+//          currentScreen.reset(new Screens::Tile(this));
+//          toggle = false;
+//        } else {
+//          currentScreen.reset(new Screens::Clock(this, dateTimeController, batteryController, bleController));
+//          toggle = true;
+//        }
+
+        break;
       case Messages::BleFirmwareUpdateStarted:
         lvgl.SetFullRefresh(Components::LittleVgl::FullRefreshDirections::Down);
         currentScreen.reset(nullptr);
         currentScreen.reset(new Screens::FirmwareUpdate(this, bleController));
         onClockApp = false;
-      break;
 
-      case Messages::StepEvent:
-      break;
-      
-      case Messages::UpdateDateTime:
-      break;
-      
-      case Messages::UpdateBleConnection:
-      break;
-      
-      case Messages::UpdateBatteryLevel:
-      break;
-
+        break;
     }
   }
 
@@ -256,28 +193,20 @@ void DisplayApp::RunningState() {
     onClockApp = false;
     switch(nextApp) {
       case Apps::None:
-      case Apps::Launcher: currentScreen.reset(new Screens::ApplicationList(this, dateTimeController, settingsController)); break;
+      case Apps::Launcher: currentScreen.reset(new Screens::ApplicationList(this)); break;
       case Apps::Clock:
-        currentScreen.reset(new Screens::Clock(this, dateTimeController, batteryController, bleController, notificationManager, settingsController, stepCounter));
+        currentScreen.reset(new Screens::Clock(this, dateTimeController, batteryController, bleController, notificationManager));
         onClockApp = true;
         break;
-      case Apps::SysInfo: currentScreen.reset(new Screens::SystemInfo(this, dateTimeController, batteryController, brightnessController, bleController, watchdog, stepCounter)); break;
+//      case Apps::Test: currentScreen.reset(new Screens::Message(this)); break;
+      case Apps::SysInfo: currentScreen.reset(new Screens::SystemInfo(this, dateTimeController, batteryController, brightnessController, bleController, watchdog)); break;
+      case Apps::Meter: currentScreen.reset(new Screens::Meter(this)); break;
+      case Apps::Gauge: currentScreen.reset(new Screens::Gauge(this)); break;
       case Apps::Paint: currentScreen.reset(new Screens::InfiniPaint(this, lvgl)); break;
       case Apps::Brightness : currentScreen.reset(new Screens::Brightness(this, brightnessController)); break;
       case Apps::Music : currentScreen.reset(new Screens::Music(this, systemTask.nimble().music())); break;
       case Apps::FirmwareValidation: currentScreen.reset(new Screens::FirmwareValidation(this, validator)); break;
       case Apps::Notifications: currentScreen.reset(new Screens::Notifications(this, notificationManager, Screens::Notifications::Modes::Normal)); break;
-      case Apps::FileManager: currentScreen.reset(new Screens::FileManager(this)); break;
-      case Apps::Settings: currentScreen.reset(new Screens::Settings(this, batteryController)); break;
-      case Apps::Steps: currentScreen.reset(new Screens::Steps(this, stepCounter)); break;
-      case Apps::HeartRate: currentScreen.reset(new Screens::HeartRate(this, hrs, settingsController, systemTask)); break;
-
-      // To Do :-)
-      case Apps::Weather: currentScreen.reset(new Screens::ScreensTemplate(this, "Weather")); break;
-      case Apps::Iot: currentScreen.reset(new Screens::ScreensTemplate(this, "Iot")); break;
-      case Apps::MobileApp: currentScreen.reset(new Screens::ScreensTemplate(this, "Mobile App")); break;
-      case Apps::Charging: currentScreen.reset(new Screens::ScreensTemplate(this, "Charging")); break;
-      case Apps::StopWatch: currentScreen.reset(new Screens::ScreensTemplate(this, "Stop Watch")); break;
     }
     nextApp = Apps::None;
   }
