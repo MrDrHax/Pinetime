@@ -26,12 +26,13 @@ namespace Pinetime {
                 std::chrono::_V2::system_clock::time_point startTime;
                 std::chrono::_V2::system_clock::time_point endTime;
 
-                double elapsedTime = 0.;
+                double elapsedTime;
 
                 unsigned short int miliseconds;
                 unsigned short int seconds;
                 unsigned short int minutes;
                 unsigned int hours;
+                unsigned int count;
 
                 void startTimer();
                 void stopTimer();

@@ -12,8 +12,9 @@ Stopwatch::Stopwatch(Pinetime::Applications::DisplayApp *app) : Screen(app){
     label_time = lv_label_create(lv_scr_act(), nullptr);
     label_extra = lv_label_create(lv_scr_act(), nullptr);
     //lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
-    lv_label_set_text(label_time, "TIME v0.0.2");
+    lv_label_set_text(label_time, "TIME v0.0.3");
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+    
     lv_label_set_text(label_extra, "making sure this works");
     lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, 20);
 }
@@ -34,7 +35,7 @@ bool Stopwatch::Refresh() {
         lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
 
         char otherStr[50];
-        sprintf(otherStr, "%i", static_cast<int>(elapsedTime));
+        sprintf(otherStr, "%i : %i", static_cast<int>(elapsedTime), count);
         lv_label_set_text(label_extra, otherStr);
         lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, 20);
     }
