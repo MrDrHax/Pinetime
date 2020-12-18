@@ -56,6 +56,11 @@ bool Stopwatch::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
 void Stopwatch::startTimer(){
     startTime = std::chrono::system_clock::now();
 
+    char timeStr[50];
+    sprintf(timeStr, "start time: %f", startTime.time_since_epoch());
+    lv_label_set_text(label_time, timeStr);
+    lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+
     countingTime = true;
 }
 
@@ -66,7 +71,7 @@ void Stopwatch::stopTimer(){
     elapsedTime = elapsed_seconds.count();
 
     char timeStr[50];
-    sprintf(timeStr, "%fs", elapsedTime);
+    sprintf(timeStr, "%is", 10);
     lv_label_set_text(label_time, timeStr);
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
 
