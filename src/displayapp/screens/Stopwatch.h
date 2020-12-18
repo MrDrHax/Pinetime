@@ -28,11 +28,11 @@ namespace Pinetime {
 
                 double elapsedTime;
 
-                unsigned short int miliseconds;
-                unsigned short int seconds;
-                unsigned short int minutes;
-                unsigned int hours;
-                unsigned int count;
+                unsigned short int miliseconds = 0;
+                unsigned short int seconds = 0;
+                unsigned short int minutes = 0;
+                unsigned int hours = 0;
+                unsigned int count = 0;
 
                 void startTimer();
                 void stopTimer();

@@ -12,11 +12,13 @@ Stopwatch::Stopwatch(Pinetime::Applications::DisplayApp *app) : Screen(app){
     label_time = lv_label_create(lv_scr_act(), nullptr);
     label_extra = lv_label_create(lv_scr_act(), nullptr);
     //lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
-    lv_label_set_text(label_time, "TIME v0.0.3");
+    lv_label_set_text(label_time, "TIME v0.0.4");
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
     
-    lv_label_set_text(label_extra, "making sure this works");
+    lv_label_set_text(label_extra, "blyat");
     lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, 20);
+
+    count = 0;
 }
 
 Stopwatch::~Stopwatch() {
@@ -35,7 +37,7 @@ bool Stopwatch::Refresh() {
         lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
 
         char otherStr[50];
-        sprintf(otherStr, "%i : %i", static_cast<int>(elapsedTime), count);
+        sprintf(otherStr, "%10i : %i", (int)elapsedTime, count++);
         lv_label_set_text(label_extra, otherStr);
         lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, 20);
     }
@@ -94,10 +96,12 @@ void Stopwatch::stopTimer(){
 void Stopwatch::restartTimer(){
     elapsedTime = 0.;
 
+    count = 0;
+
     lv_label_set_text(label_time, "RESTART");
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
 
-    lv_label_set_text(label_extra, "making sure this works");
+    lv_label_set_text(label_extra, "blyat 2");
     lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, 20);
 
     countingTime = false;
