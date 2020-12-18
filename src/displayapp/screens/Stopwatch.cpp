@@ -12,8 +12,10 @@ Stopwatch::Stopwatch(Pinetime::Applications::DisplayApp *app) : Screen(app){
     label_time = lv_label_create(lv_scr_act(), nullptr);
     label_extra = lv_label_create(lv_scr_act(), nullptr);
     //lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
-    lv_label_set_text(label_time, "TIME v0.0.1");
+    lv_label_set_text(label_time, "TIME v0.0.2");
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+    lv_label_set_text(label_extra, "making sure this works");
+    lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, 20);
 }
 
 Stopwatch::~Stopwatch() {
@@ -24,7 +26,7 @@ bool Stopwatch::Refresh() {
     if (countingTime){
         endTime = std::chrono::system_clock::now();
 
-        elapsedTime = std::chrono::duration_cast<std::chrono::duration<float>>(endTime - startTime).count(); // get the time difference in seconds
+        elapsedTime = std::chrono::duration_cast<std::chrono::duration<double>>(endTime - startTime).count(); // get the time difference in seconds
 
         char timeStr[50];
         calculateTime(elapsedTime, timeStr);
@@ -32,7 +34,7 @@ bool Stopwatch::Refresh() {
         lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
 
         char otherStr[50];
-        sprintf(otherStr, "%.2f", static_cast<float>(elapsedTime));
+        sprintf(otherStr, "%i", static_cast<int>(elapsedTime));
         lv_label_set_text(label_extra, otherStr);
         lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, 20);
     }
@@ -78,7 +80,7 @@ void Stopwatch::startTimer(){
 void Stopwatch::stopTimer(){
     endTime = std::chrono::system_clock::now();
 
-    elapsedTime = 1000.; //std::chrono::duration_cast<std::chrono::duration<float>>(endTime - startTime).count(); // get the time difference in seconds
+    elapsedTime = 10.22; //std::chrono::duration_cast<std::chrono::duration<double>>(endTime - startTime).count(); // get the time difference in seconds
 
     char timeStr[50];
     calculateTime(elapsedTime, timeStr);
@@ -90,20 +92,25 @@ void Stopwatch::stopTimer(){
 
 void Stopwatch::restartTimer(){
     elapsedTime = 0.;
+
     lv_label_set_text(label_time, "RESTART");
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+
+    lv_label_set_text(label_extra, "making sure this works");
+    lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, 20);
+
     countingTime = false;
 }
 
-void Stopwatch::calculateTime(float timeDifference, char *timeStr){
+void Stopwatch::calculateTime(double timeDifference, char *timeStr){
     convertToHMS(timeDifference, &miliseconds ,&seconds, &minutes, &hours);
 
-    if (hours > 0) sprintf(timeStr, "%i:%i:%i.%i", hours, minutes, seconds, miliseconds);
-    else if (minutes > 0) sprintf(timeStr, "%i:%i.%i", minutes, seconds, miliseconds);
-    else sprintf(timeStr, "%i.%i", seconds, miliseconds);
+    if (hours > 0) sprintf(timeStr, "%02i:%02i:%02i.%02i", hours, minutes, seconds, miliseconds);
+    else if (minutes > 0) sprintf(timeStr, "%02i:%02i.%02i", minutes, seconds, miliseconds);
+    else sprintf(timeStr, "%02i.%02i", seconds, miliseconds);
 }
 
-void Stopwatch::convertToHMS(float seconds, unsigned short int *ms, unsigned short int *s, unsigned short int *m, unsigned int *h){
+void Stopwatch::convertToHMS(double seconds, unsigned short int *ms, unsigned short int *s, unsigned short int *m, unsigned int *h){
     unsigned temp = static_cast<int>(seconds * 1000.);
 
     *h = temp / (1000 * 60 * 60);
