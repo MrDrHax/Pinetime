@@ -52,7 +52,7 @@ Clock::Clock(DisplayApp* app,
   lv_obj_align(notificationIcon, nullptr, LV_ALIGN_IN_TOP_LEFT, 10, 0);
 
   label_AMPM = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(label_AMPM, lv_scr_act(), LV_ALIGN_IN_RIGHT_MID, 0, 50);
+  lv_obj_align(label_AMPM, lv_scr_act(), LV_ALIGN_IN_RIGHT_MID, 0, 40);
 
   label_date = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, -60);
