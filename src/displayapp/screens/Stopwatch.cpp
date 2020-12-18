@@ -20,6 +20,16 @@ Stopwatch::~Stopwatch() {
 }
 
 bool Stopwatch::Refresh() {
+    if (countingTime){
+        endTime = std::chrono::system_clock::now();
+
+        elapsedTime = std::chrono::duration_cast<std::chrono::duration<double>>(endTime - startTime).count(); // get the time difference in seconds
+
+        char timeStr[50];
+        calculateTime(elapsedTime, timeStr);
+        lv_label_set_text(label_time, timeStr);
+        lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+    }
     return running;
 }
 
@@ -56,18 +66,13 @@ bool Stopwatch::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
 void Stopwatch::startTimer(){
     startTime = std::chrono::system_clock::now();
 
-    char timeStr[50];
-    sprintf(timeStr, "start time: %f", startTime.time_since_epoch());
-    lv_label_set_text(label_time, timeStr);
-    lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
-
     countingTime = true;
 }
 
 void Stopwatch::stopTimer(){
     endTime = std::chrono::system_clock::now();
 
-    elapsedTime += std::chrono::duration_cast<std::chrono::duration<double>>(endTime - startTime).count(); // get the time difference in seconds
+    elapsedTime = 100000.123;//std::chrono::duration_cast<std::chrono::duration<double>>(endTime - startTime).count(); // get the time difference in seconds
 
     char timeStr[50];
     calculateTime(elapsedTime, timeStr);
@@ -87,9 +92,9 @@ void Stopwatch::restartTimer(){
 void Stopwatch::calculateTime(double timeDifference, char *timeStr){
     convertToHMS(timeDifference, &miliseconds ,&seconds, &minutes, &hours);
 
-    if (hours > 0) sprintf(timeStr, "time: %i:%i:%i.%i", hours, minutes, seconds, miliseconds);
-    else if (minutes > 0) sprintf(timeStr, "time: %i:%i.%i", minutes, seconds, miliseconds);
-    else sprintf(timeStr, "time: %i.%i", seconds, miliseconds);
+    if (hours > 0) sprintf(timeStr, "%i:%i:%i.%i", hours, minutes, seconds, miliseconds);
+    else if (minutes > 0) sprintf(timeStr, "%i:%i.%i", minutes, seconds, miliseconds);
+    else sprintf(timeStr, "%i.%i", seconds, miliseconds);
 }
 
 void Stopwatch::convertToHMS(double seconds, unsigned short int *ms, unsigned short int *s, unsigned short int *m, unsigned int *h){
