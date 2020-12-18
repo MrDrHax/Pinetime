@@ -57,7 +57,7 @@ void Stopwatch::startTimer(){
     startTime = std::chrono::system_clock::now();
 
     char timeStr[50];
-    sprintf(timeStr, "start time: %f", startTime.time_since_epoch());
+    sprintf(timeStr, "starting timer:");
     lv_label_set_text(label_time, timeStr);
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
 
