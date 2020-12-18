@@ -67,7 +67,7 @@ void Stopwatch::stopTimer(){
     elapsedTime += elapsed_seconds.count();
 
     char timeStr[20];
-    sprintf(timeStr, "%c s", elapsedTime);
+    sprintf(timeStr, "%c s", (int)(elapsedTime * 100) / 100);
     lv_label_set_text(label_time, timeStr);
 
     countingTime = false;
