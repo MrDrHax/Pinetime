@@ -72,7 +72,7 @@ void Stopwatch::startTimer(){
 void Stopwatch::stopTimer(){
     endTime = std::chrono::system_clock::now();
 
-    elapsedTime = 100000.123;//std::chrono::duration_cast<std::chrono::duration<double>>(endTime - startTime).count(); // get the time difference in seconds
+    elapsedTime = std::chrono::duration_cast<std::chrono::duration<double>>(endTime - startTime).count(); // get the time difference in seconds
 
     char timeStr[50];
     calculateTime(elapsedTime, timeStr);
@@ -83,7 +83,7 @@ void Stopwatch::stopTimer(){
 }
 
 void Stopwatch::restartTimer(){
-    elapsedTime = 0;
+    elapsedTime = 0.;
     lv_label_set_text(label_time, "RESTART");
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
     countingTime = false;
@@ -92,7 +92,7 @@ void Stopwatch::restartTimer(){
 void Stopwatch::calculateTime(double timeDifference, char *timeStr){
     convertToHMS(timeDifference, &miliseconds ,&seconds, &minutes, &hours);
 
-    if (hours > 0) sprintf(timeStr, "%i:%i:%i.%i", hours, minutes, seconds, miliseconds);
+    if (hours > 0) sprintf(timeStr, "%f", timeDifference);//"%i:%i:%i.%i", hours, minutes, seconds, miliseconds);
     else if (minutes > 0) sprintf(timeStr, "%i:%i.%i", minutes, seconds, miliseconds);
     else sprintf(timeStr, "%i.%i", seconds, miliseconds);
 }
