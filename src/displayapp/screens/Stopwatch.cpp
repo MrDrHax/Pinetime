@@ -31,9 +31,9 @@ bool Stopwatch::Refresh() {
         lv_label_set_text(label_time, "working...");
         lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
 
-        //char otherStr[50];
-        //sprintf(otherStr, "%.2f", elapsedTime);
-        lv_label_set_text(label_extra, "it was just falling behind...");
+        char otherStr[50];
+        sprintf(otherStr, "%.2f", elapsedTime);
+        lv_label_set_text(label_extra, otherStr);
         lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, 20);
     }
     return running;
@@ -90,7 +90,7 @@ void Stopwatch::stopTimer(){
 
 void Stopwatch::restartTimer(){
     elapsedTime = 0.;
-    lv_label_set_text(label_time, "RESTARTpt2");
+    lv_label_set_text(label_time, "RESTARTpt3");
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
     countingTime = false;
 }
