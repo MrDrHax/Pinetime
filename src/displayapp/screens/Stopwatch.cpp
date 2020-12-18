@@ -26,14 +26,14 @@ bool Stopwatch::Refresh() {
 
         elapsedTime = 10.22; //std::chrono::duration_cast<std::chrono::duration<double>>(endTime - startTime).count(); // get the time difference in seconds
 
-        char timeStr[50];
-        calculateTime(elapsedTime, timeStr);
-        lv_label_set_text(label_time, timeStr);
+        //char timeStr[50];
+        //calculateTime(elapsedTime, timeStr);
+        lv_label_set_text(label_time, "working...");
         lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
 
-        char otherStr[50];
-        sprintf(otherStr, "%.2f", elapsedTime);
-        lv_label_set_text(label_extra, otherStr);
+        //char otherStr[50];
+        //sprintf(otherStr, "%.2f", elapsedTime);
+        lv_label_set_text(label_extra, "I have no idea what I am doing tbh");
         lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, -20);
     }
     return running;
@@ -84,11 +84,6 @@ void Stopwatch::stopTimer(){
     calculateTime(elapsedTime, timeStr);
     lv_label_set_text(label_time, timeStr);
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
-
-    char otherStr[50];
-    sprintf(otherStr, "%.2f", elapsedTime);
-    lv_label_set_text(label_extra, otherStr);
-    lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, -20);
 
     countingTime = false;
 }
