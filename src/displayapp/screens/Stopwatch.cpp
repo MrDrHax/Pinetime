@@ -63,10 +63,10 @@ void Stopwatch::stopTimer(){
     endTime = std::chrono::system_clock::now();
 
     std::chrono::duration<double> elapsed_seconds = endTime - startTime;
-    elapsedTime += elapsed_seconds.count();
+    elapsedTime = elapsed_seconds.count();
 
-    char timeStr[20];
-    sprintf(timeStr, "%f s", elapsedTime);
+    char timeStr[50];
+    sprintf(timeStr, "%d s", (int)elapsedTime);
     lv_label_set_text(label_time, timeStr);
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
 
