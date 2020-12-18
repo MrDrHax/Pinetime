@@ -23,13 +23,19 @@ namespace Pinetime {
 
                 bool countingTime = false;
                 
-                std::chrono::_V2::system_clock::time_point startTime = std::chrono::system_clock::now();
-                std::chrono::_V2::system_clock::time_point endTime = std::chrono::system_clock::now();
-                float elapsedTime = 0;
+                std::chrono::_V2::system_clock::time_point startTime;
+                std::chrono::_V2::system_clock::time_point endTime;
+                double elapsedTime = 0;
+                unsigned short int miliseconds;
+                unsigned short int seconds;
+                unsigned short int minutes;
+                unsigned int hours;
 
                 void startTimer();
                 void stopTimer();
                 void restartTimer();
+                void calculateTime(double timeDifference, char* timeStr);
+                void convertToHMS(double seconds, unsigned short int *ms, unsigned short int *s, unsigned short int *m, unsigned int *h);
 
                 lv_obj_t * label_time;
             };

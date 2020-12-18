@@ -34,3 +34,7 @@ Testing/Temporary/
 
 # Windows
 **/thumbs.db
+
+#vscode
+**/.vscode/
+.vscode/

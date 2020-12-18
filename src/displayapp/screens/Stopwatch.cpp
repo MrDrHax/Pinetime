@@ -67,11 +67,10 @@ void Stopwatch::startTimer(){
 void Stopwatch::stopTimer(){
     endTime = std::chrono::system_clock::now();
 
-    std::chrono::duration<double> elapsed_seconds = endTime - startTime;
-    elapsedTime = elapsed_seconds.count();
+    elapsedTime += std::chrono::duration_cast<std::chrono::duration<double>>(endTime - startTime).count(); // get the time difference in seconds
 
     char timeStr[50];
-    sprintf(timeStr, "%is", 10);
+    calculateTime(elapsedTime, timeStr);
     lv_label_set_text(label_time, timeStr);
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
 
@@ -83,4 +82,26 @@ void Stopwatch::restartTimer(){
     lv_label_set_text(label_time, "RESTART");
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
     countingTime = false;
+}
+
+void Stopwatch::calculateTime(double timeDifference, char *timeStr){
+    convertToHMS(timeDifference, &miliseconds ,&seconds, &minutes, &hours);
+
+    if (hours > 0) sprintf(timeStr, "time: %i:%i:%i.%i", hours, minutes, seconds, miliseconds);
+    else if (minutes > 0) sprintf(timeStr, "time: %i:%i.%i", minutes, seconds, miliseconds);
+    else sprintf(timeStr, "time: %i.%i", seconds, miliseconds);
+}
+
+void Stopwatch::convertToHMS(double seconds, unsigned short int *ms, unsigned short int *s, unsigned short int *m, unsigned int *h){
+    unsigned temp = static_cast<int>(seconds * 1000.);
+
+    *h = temp / (1000 * 60 * 60);
+    temp -= *h * (1000 * 60 * 60);
+
+    *m = temp / (1000 * 60);
+    temp -= *m * (1000 * 60);
+
+    *s = temp / 1000;
+    temp -= *s * 1000;
+    *ms = temp;
 }
