@@ -331,6 +331,7 @@ list(APPEND SOURCE_FILES
         displayapp/screens/Clock.cpp
         displayapp/screens/Tile.cpp
         displayapp/screens/Meter.cpp
+        displayapp/screens/Stopwatch.cpp
         displayapp/screens/Gauge.cpp
         displayapp/screens/InfiniPaint.cpp
         displayapp/screens/DropDownDemo.cpp
@@ -412,6 +413,7 @@ set(INCLUDE_FILES
         displayapp/screens/Clock.h
         displayapp/screens/Tile.h
         displayapp/screens/Meter.h
+        displayapp/screens/Stopwatch.h
         displayapp/screens/Gauge.h
         displayapp/screens/InfiniPaint.h
         displayapp/screens/DropDownDemo.h
