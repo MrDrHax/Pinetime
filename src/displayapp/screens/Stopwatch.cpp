@@ -12,7 +12,7 @@ Stopwatch::Stopwatch(Pinetime::Applications::DisplayApp *app) : Screen(app){
     label_time = lv_label_create(lv_scr_act(), nullptr);
     label_extra = lv_label_create(lv_scr_act(), nullptr);
     //lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
-    lv_label_set_text(label_time, "TIME v0.0.5");
+    lv_label_set_text(label_time, "TIME v0.0.6");
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
     
     lv_label_set_text(label_extra, "blyat");
@@ -29,7 +29,7 @@ bool Stopwatch::Refresh() {
     if (countingTime){
         endTime = std::chrono::system_clock::now();
 
-        int time = std::chrono::duration_cast<std::chrono::duration<int>>(endTime - startTime).count();
+        double time = 1524.231;
         elapsedTime = std::chrono::duration_cast<std::chrono::duration<double>>(endTime - startTime).count(); // get the time difference in seconds
 
         char timeStr[50];
