@@ -12,7 +12,7 @@ Stopwatch::Stopwatch(Pinetime::Applications::DisplayApp *app) : Screen(app){
     label_time = lv_label_create(lv_scr_act(), nullptr);
     label_extra = lv_label_create(lv_scr_act(), nullptr);
     //lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
-    lv_label_set_text(label_time, "TIME v0.0.4");
+    lv_label_set_text(label_time, "TIME v0.0.5");
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
     
     lv_label_set_text(label_extra, "blyat");
@@ -29,6 +29,7 @@ bool Stopwatch::Refresh() {
     if (countingTime){
         endTime = std::chrono::system_clock::now();
 
+        int time = std::chrono::duration_cast<std::chrono::duration<int>>(endTime - startTime).count();
         elapsedTime = std::chrono::duration_cast<std::chrono::duration<double>>(endTime - startTime).count(); // get the time difference in seconds
 
         char timeStr[50];
@@ -37,7 +38,7 @@ bool Stopwatch::Refresh() {
         lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
 
         char otherStr[50];
-        sprintf(otherStr, "%10i : %i", (int)elapsedTime, count++);
+        sprintf(otherStr, "%03i, %03i: %i", static_cast<int>(elapsedTime), static_cast<int>(time),count++);
         lv_label_set_text(label_extra, otherStr);
         lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, 20);
     }

@@ -23,10 +23,10 @@ namespace Pinetime {
 
                 bool countingTime = false;
                 
-                std::chrono::_V2::system_clock::time_point startTime;
-                std::chrono::_V2::system_clock::time_point endTime;
+                std::chrono::_V2::system_clock::time_point startTime = std::chrono::system_clock::now();
+                std::chrono::_V2::system_clock::time_point endTime = std::chrono::system_clock::now();
 
-                double elapsedTime;
+                double elapsedTime = 0.;
 
                 unsigned short int miliseconds = 0;
                 unsigned short int seconds = 0;
