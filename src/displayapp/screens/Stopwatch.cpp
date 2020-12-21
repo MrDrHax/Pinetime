@@ -12,18 +12,22 @@ using std::chrono::duration_cast;
 extern lv_font_t jetbrains_mono_extrabold_compressed;
 extern lv_font_t jetbrains_mono_bold_20;
 
+extern lv_style_t* LabelBigStyle;
+
 Stopwatch::Stopwatch(DisplayApp* app,
                      Controllers::DateTime& dateTimeController) : Screen(app),
                      dateTimeController{dateTimeController} {
 
   label_time = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+  lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
   lv_label_set_align(label_time, LV_LABEL_ALIGN_CENTER);
 
   label_extra = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, 50);
+  lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
+  lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
 
-  lv_label_set_text(label_time, "Time v0.0.9");
+  lv_label_set_text(label_time, "Time v0.0.10");
 }
 
 Stopwatch::~Stopwatch() {
@@ -39,16 +43,8 @@ bool Stopwatch::Refresh() {
         int time = getCurrentTime();
 
         // 2nd update timer label
-        char otherStr[13];
 
-        calculateTime(time, otherStr);
-        lv_label_set_text(label_time, otherStr);
-        lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
-        
-        char timeStr[11];
-        sprintf(timeStr, "%i", time);
-        lv_label_set_text(label_extra, timeStr);
-        
+        calculateTime(time);
     }
 
     return running;
@@ -114,24 +110,56 @@ int Stopwatch::getCurrentTime() {
     return delta.count() + elapsedTime;
 }
 
-void Stopwatch::calculateTime(float timeDifference, char *timeStr){
+void Stopwatch::calculateTime(float timeDifference){
     convertToHMS(timeDifference, &miliseconds ,&seconds, &minutes, &hours);
+    char timeStr[6];
 
-    if (hours > 0) sprintf(timeStr, "%02i:%02i:%02i.%02i", hours, minutes, seconds, miliseconds);
-    else if (minutes > 0) sprintf(timeStr, "%02i:%02i.%02i", minutes, seconds, miliseconds);
-    else sprintf(timeStr, "%02i.%02i", seconds, miliseconds);
+    if (hours > 0) {
+        sprintf(timeStr, "%02i:%02i", hours, minutes);
+
+        lv_label_set_text(label_time, timeStr);
+        lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+        
+        sprintf(timeStr, "%is", seconds);
+
+        lv_label_set_text(label_extra, timeStr);
+        lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
+    }
+    else if (minutes > 0) {
+        sprintf(timeStr, "%02i:%02i", minutes, seconds);
+
+        lv_label_set_text(label_time, timeStr);
+        lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+        
+        //sprintf(timeStr, "%i", miliseconds); // add miliseconds when you find out how to here!!!!
+        
+        lv_label_set_text(label_extra, "");
+        lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
+    }
+    else {
+        sprintf(timeStr, "%02is", seconds); // add ms here when you know how to
+
+        lv_label_set_text(label_time, timeStr);
+        lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+        
+        //sprintf(timeStr, "%i", miliseconds); // add miliseconds when you find out how to here!!!!
+        
+        lv_label_set_text(label_extra, "");
+        lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
+    }
 }
 
 void Stopwatch::convertToHMS(int seconds, unsigned short int *ms, unsigned short int *s, unsigned short int *m, unsigned int *h){
-    int temp = static_cast<int>(seconds * 1.);
+    static int multiplier = 1000;
+    int temp = static_cast<int>(seconds);
 
-    *h = temp / (1 * 60 * 60);
-    temp -= *h * (1 * 60 * 60);
+    *h = temp / (multiplier * 60 * 60);
+    temp -= *h * (multiplier * 60 * 60);
 
-    *m = temp / (1 * 60);
-    temp -= *m * (1 * 60);
+    *m = temp / (multiplier * 60);
+    temp -= *m * (multiplier * 60);
 
-    *s = temp / 1;
-    temp -= *s * 1;
+    *s = temp / multiplier;
+    temp -= *s * multiplier;
     *ms = temp;
 }

@@ -31,6 +31,8 @@ namespace Pinetime {
                 unsigned int hours = 0;
                 unsigned int count = 0;
 
+                static int label_extra_offset;
+
                 Controllers::DateTime& dateTimeController;
                 std::chrono::system_clock::time_point startTime;
                 std::chrono::system_clock::time_point endTime;
@@ -40,7 +42,7 @@ namespace Pinetime {
                 void startTimer();
                 void stopTimer();
                 void restartTimer();
-                void calculateTime(float timeDifference, char* timeStr);
+                void calculateTime(float timeDifference);
                 void convertToHMS(int seconds, unsigned short int *ms, unsigned short int *s, unsigned short int *m, unsigned int *h);
 
                 lv_obj_t * label_time;
