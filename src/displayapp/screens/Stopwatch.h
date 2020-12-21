@@ -1,9 +1,8 @@
 #pragma once
 
-#include <lvgl/src/lv_core/lv_obj.h>
-#include <cstdint>
-#include <cstdio>
-#include <chrono>
+#include "../DisplayApp.h"
+#include "components/datetime/DateTimeController.h"
+#include "Symbols.h"
 #include "Screen.h"
 
 namespace Pinetime {
@@ -11,7 +10,7 @@ namespace Pinetime {
         namespace Screens {
             class Stopwatch : public Screen {
                 public:
-                Stopwatch(DisplayApp* app);
+                Stopwatch(DisplayApp *app, Controllers::DateTime& dateTimeController);
                 ~Stopwatch() override;
                 bool Refresh() override;
                 bool OnButtonPushed() override;
@@ -22,9 +21,6 @@ namespace Pinetime {
                 bool running = true;
 
                 bool countingTime = false;
-                
-                std::chrono::_V2::system_clock::time_point startTime = std::chrono::system_clock::now();
-                std::chrono::_V2::system_clock::time_point endTime = std::chrono::system_clock::now();
 
                 double elapsedTime = 0.;
 
@@ -33,6 +29,12 @@ namespace Pinetime {
                 unsigned short int minutes = 0;
                 unsigned int hours = 0;
                 unsigned int count = 0;
+
+                Controllers::DateTime& dateTimeController;
+                std::chrono::system_clock::time_point startTime;
+                std::chrono::system_clock::time_point endTime;
+
+                double getCurrentTime();
 
                 void startTimer();
                 void stopTimer();

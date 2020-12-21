@@ -1,47 +1,56 @@
+#include "../DisplayApp.h"
+#include "components/datetime/DateTimeController.h"
 #include "Stopwatch.h"
-#include <lvgl/lvgl.h>
-#include <chrono>
-#include <cstdint>
-#include <cstdio>
+#include "Symbols.h"
 
 using namespace Pinetime::Applications::Screens;
 
-extern lv_style_t* LabelBigStyle;
+using std::chrono::duration;
+using std::chrono::duration_cast;
 
-Stopwatch::Stopwatch(Pinetime::Applications::DisplayApp *app) : Screen(app){
-    label_time = lv_label_create(lv_scr_act(), nullptr);
-    label_extra = lv_label_create(lv_scr_act(), nullptr);
-    //lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
-    lv_label_set_text(label_time, "TIME v0.0.6");
-    lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
-    
-    lv_label_set_text(label_extra, "blyat");
-    lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, 20);
+extern lv_font_t jetbrains_mono_extrabold_compressed;
+extern lv_font_t jetbrains_mono_bold_20;
 
-    count = 0;
+Stopwatch::Stopwatch(DisplayApp* app,
+                     Controllers::DateTime& dateTimeController) : Screen(app),
+                     dateTimeController{dateTimeController} {
+
+  label_time = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+  lv_label_set_align(label_time, LV_LABEL_ALIGN_CENTER);
+
+  label_extra = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_align(label_extra, label_time, LV_ALIGN_CENTER, 0, 10);
+
+  lv_label_set_text(label_time, "Time v0.0.7");
 }
 
 Stopwatch::~Stopwatch() {
-    lv_obj_clean(lv_scr_act());
+  lv_obj_clean(lv_scr_act());
 }
 
 bool Stopwatch::Refresh() {
     if (countingTime){
-        endTime = std::chrono::system_clock::now();
+        // fix this
 
-        double time = 1524.231;
-        elapsedTime = std::chrono::duration_cast<std::chrono::duration<double>>(endTime - startTime).count(); // get the time difference in seconds
+        //1st count new time
 
+        double time = getCurrentTime();
+
+        // 2nd update timer label
+        char otherStr[50];
+        convertToHMS(time, &miliseconds, &seconds, &minutes, &hours);
+        sprintf(otherStr, "%02i.%02i", seconds, miliseconds);
+        lv_label_set_text(label_time, otherStr);
+        
         char timeStr[50];
         calculateTime(elapsedTime, timeStr);
-        lv_label_set_text(label_time, "working...");
+        lv_label_set_text(label_extra, "counting...");
         lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
 
-        char otherStr[50];
-        sprintf(otherStr, "%03i, %03i: %i", static_cast<int>(elapsedTime), static_cast<int>(time),count++);
-        lv_label_set_text(label_extra, otherStr);
-        lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, 20);
+        
     }
+
     return running;
 }
 
@@ -76,44 +85,32 @@ bool Stopwatch::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
 }
 
 void Stopwatch::startTimer(){
-    startTime = std::chrono::system_clock::now();
+    startTime = dateTimeController.CurrentDateTime();
 
     countingTime = true;
 }
 
 void Stopwatch::stopTimer(){
-    endTime = std::chrono::system_clock::now();
-
-    elapsedTime = 10.22; //std::chrono::duration_cast<std::chrono::duration<double>>(endTime - startTime).count(); // get the time difference in seconds
-
-    char timeStr[50];
-    calculateTime(elapsedTime, timeStr);
-    lv_label_set_text(label_time, timeStr);
-    lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
-
+    // add paused lavel here
     countingTime = false;
 }
 
 void Stopwatch::restartTimer(){
     elapsedTime = 0.;
 
-    count = 0;
-
     lv_label_set_text(label_time, "RESTART");
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
 
-    lv_label_set_text(label_extra, "blyat 2");
+    lv_label_set_text(label_extra, "0:0:0.0");
     lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, 20);
 
     countingTime = false;
 }
 
-void Stopwatch::calculateTime(double timeDifference, char *timeStr){
-    convertToHMS(timeDifference, &miliseconds ,&seconds, &minutes, &hours);
-
-    if (hours > 0) sprintf(timeStr, "%02i:%02i:%02i.%02i", hours, minutes, seconds, miliseconds);
-    else if (minutes > 0) sprintf(timeStr, "%02i:%02i.%02i", minutes, seconds, miliseconds);
-    else sprintf(timeStr, "%02i.%02i", seconds, miliseconds);
+double Stopwatch::getCurrentTime() {
+  duration<double> delta =
+      duration_cast<duration<double>>(dateTimeController.CurrentDateTime() - startTime);
+  return (double) delta.count();
 }
 
 void Stopwatch::convertToHMS(double seconds, unsigned short int *ms, unsigned short int *s, unsigned short int *m, unsigned int *h){
