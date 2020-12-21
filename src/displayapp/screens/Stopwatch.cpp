@@ -93,12 +93,12 @@ void Stopwatch::startTimer(){
 void Stopwatch::stopTimer(){
     // add paused lavel here
     countingTime = false;
-    elapsedTime = 150000000;//getCurrentTime();
+    elapsedTime = getCurrentTime();
     lv_label_set_text(label_info, "paused");
 }
 
 void Stopwatch::restartTimer(){
-    elapsedTime = 0.;
+    elapsedTime = 0;
 
     lv_label_set_text(label_info, "paused");
 
