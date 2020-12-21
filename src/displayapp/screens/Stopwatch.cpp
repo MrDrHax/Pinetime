@@ -104,13 +104,13 @@ void Stopwatch::restartTimer(){
     countingTime = false;
 }
 
-double Stopwatch::getCurrentTime() {
-  duration<double> delta =
-      duration_cast<duration<double>>(dateTimeController.CurrentDateTime() - startTime);
-  return (double) delta.count() + elapsedTime;
+float Stopwatch::getCurrentTime() {
+  duration<float> delta =
+      duration_cast<duration<float>>(dateTimeController.CurrentDateTime() - startTime);
+  return (float) delta.count() + elapsedTime;
 }
 
-void Stopwatch::calculateTime(double timeDifference, char *timeStr){
+void Stopwatch::calculateTime(float timeDifference, char *timeStr){
     convertToHMS(timeDifference, &miliseconds ,&seconds, &minutes, &hours);
 
     if (hours > 0) sprintf(timeStr, "%02i:%02i:%02i.%02i", hours, minutes, seconds, miliseconds);
@@ -118,8 +118,8 @@ void Stopwatch::calculateTime(double timeDifference, char *timeStr){
     else sprintf(timeStr, "%02i.%02i", seconds, miliseconds);
 }
 
-void Stopwatch::convertToHMS(double seconds, unsigned short int *ms, unsigned short int *s, unsigned short int *m, unsigned int *h){
-    unsigned temp = static_cast<int>(seconds * 1000.);
+void Stopwatch::convertToHMS(float seconds, unsigned short int *ms, unsigned short int *s, unsigned short int *m, unsigned int *h){
+    float temp = static_cast<int>(seconds * 1000.);
 
     *h = temp / (1000 * 60 * 60);
     temp -= *h * (1000 * 60 * 60);
