@@ -2,6 +2,7 @@
 #include "components/datetime/DateTimeController.h"
 #include "Stopwatch.h"
 #include "Symbols.h"
+#include <chrono>
 
 using namespace Pinetime::Applications::Screens;
 
@@ -20,9 +21,9 @@ Stopwatch::Stopwatch(DisplayApp* app,
   lv_label_set_align(label_time, LV_LABEL_ALIGN_CENTER);
 
   label_extra = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(label_extra, label_time, LV_ALIGN_CENTER, 0, 50);
+  lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, 50);
 
-  lv_label_set_text(label_time, "Time v0.0.8");
+  lv_label_set_text(label_time, "Time v0.0.9");
 }
 
 Stopwatch::~Stopwatch() {
@@ -35,16 +36,18 @@ bool Stopwatch::Refresh() {
 
         //1st count new time
 
-        double time = getCurrentTime();
+        int time = getCurrentTime();
 
         // 2nd update timer label
         char otherStr[13];
 
         calculateTime(time, otherStr);
         lv_label_set_text(label_time, otherStr);
+        lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
         
-        //char timeStr[11];
-        lv_label_set_text(label_extra, "counting...");
+        char timeStr[11];
+        sprintf(timeStr, "%i", time);
+        lv_label_set_text(label_extra, timeStr);
         
     }
 
@@ -104,10 +107,11 @@ void Stopwatch::restartTimer(){
     countingTime = false;
 }
 
-float Stopwatch::getCurrentTime() {
-  duration<float> delta =
-      duration_cast<duration<float>>(dateTimeController.CurrentDateTime() - startTime);
-  return (float) delta.count() + elapsedTime;
+int Stopwatch::getCurrentTime() {
+    auto delta =
+        duration_cast<std::chrono::milliseconds>(dateTimeController.CurrentDateTime() - startTime);
+        
+    return delta.count() + elapsedTime;
 }
 
 void Stopwatch::calculateTime(float timeDifference, char *timeStr){
@@ -118,16 +122,16 @@ void Stopwatch::calculateTime(float timeDifference, char *timeStr){
     else sprintf(timeStr, "%02i.%02i", seconds, miliseconds);
 }
 
-void Stopwatch::convertToHMS(float seconds, unsigned short int *ms, unsigned short int *s, unsigned short int *m, unsigned int *h){
-    float temp = static_cast<int>(seconds * 1000.);
+void Stopwatch::convertToHMS(int seconds, unsigned short int *ms, unsigned short int *s, unsigned short int *m, unsigned int *h){
+    int temp = static_cast<int>(seconds * 1.);
 
-    *h = temp / (1000 * 60 * 60);
-    temp -= *h * (1000 * 60 * 60);
+    *h = temp / (1 * 60 * 60);
+    temp -= *h * (1 * 60 * 60);
 
-    *m = temp / (1000 * 60);
-    temp -= *m * (1000 * 60);
+    *m = temp / (1 * 60);
+    temp -= *m * (1 * 60);
 
-    *s = temp / 1000;
-    temp -= *s * 1000;
+    *s = temp / 1;
+    temp -= *s * 1;
     *ms = temp;
 }

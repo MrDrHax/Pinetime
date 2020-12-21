@@ -4,6 +4,7 @@
 #include "components/datetime/DateTimeController.h"
 #include "Symbols.h"
 #include "Screen.h"
+#include <chrono>
 
 namespace Pinetime {
     namespace Applications {
@@ -34,13 +35,13 @@ namespace Pinetime {
                 std::chrono::system_clock::time_point startTime;
                 std::chrono::system_clock::time_point endTime;
 
-                float getCurrentTime();
+                int getCurrentTime();
 
                 void startTimer();
                 void stopTimer();
                 void restartTimer();
                 void calculateTime(float timeDifference, char* timeStr);
-                void convertToHMS(float seconds, unsigned short int *ms, unsigned short int *s, unsigned short int *m, unsigned int *h);
+                void convertToHMS(int seconds, unsigned short int *ms, unsigned short int *s, unsigned short int *m, unsigned int *h);
 
                 lv_obj_t * label_time;
                 lv_obj_t * label_extra;
