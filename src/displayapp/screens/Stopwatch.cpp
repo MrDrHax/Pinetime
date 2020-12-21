@@ -19,19 +19,18 @@ Stopwatch::Stopwatch(DisplayApp* app,
                      dateTimeController{dateTimeController} {
 
   label_time = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_text(label_time, "00");
   lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
   lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
 
   label_info = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(label_info, lv_scr_act(), LV_ALIGN_CENTER, 0, -90);
+  lv_label_set_text(label_info, "paused");
+  lv_obj_align(label_info, lv_scr_act(), LV_ALIGN_CENTER, 0, -80);
 
   label_extra = lv_label_create(lv_scr_act(), nullptr);
+  lv_label_set_text(label_extra, "");
   lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
   lv_label_set_style(label_extra, LV_LABEL_STYLE_MAIN, LabelBigStyle);
-
-  lv_label_set_text(label_time, "00");
-  lv_label_set_text(label_info, "paused");
-
 }
 
 Stopwatch::~Stopwatch() {
@@ -55,7 +54,7 @@ bool Stopwatch::Refresh() {
 }
 
 bool Stopwatch::OnButtonPushed() {
-  //running = false;
+  running = false;
   return true;
 }
 
@@ -125,12 +124,12 @@ void Stopwatch::calculateTime(float timeDifference){
         sprintf(timeStr, "%02i:%02i", hours, minutes);
 
         lv_label_set_text(label_time, timeStr);
-        lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+        lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, -20);
         
         sprintf(timeStr, "%02i", seconds);
 
         lv_label_set_text(label_extra, timeStr);
-        lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
+        lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset - 20);
     }
     else if (minutes > 0) {
         sprintf(timeStr, "%02i:%02i", minutes, seconds);
