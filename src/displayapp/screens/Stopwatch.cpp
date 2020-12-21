@@ -20,9 +20,9 @@ Stopwatch::Stopwatch(DisplayApp* app,
   lv_label_set_align(label_time, LV_LABEL_ALIGN_CENTER);
 
   label_extra = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(label_extra, label_time, LV_ALIGN_CENTER, 0, 10);
+  lv_obj_align(label_extra, label_time, LV_ALIGN_CENTER, 0, 50);
 
-  lv_label_set_text(label_time, "Time v0.0.7");
+  lv_label_set_text(label_time, "Time v0.0.8");
 }
 
 Stopwatch::~Stopwatch() {
@@ -38,15 +38,13 @@ bool Stopwatch::Refresh() {
         double time = getCurrentTime();
 
         // 2nd update timer label
-        char otherStr[50];
-        convertToHMS(time, &miliseconds, &seconds, &minutes, &hours);
-        sprintf(otherStr, "%02i.%02i", seconds, miliseconds);
+        char otherStr[13];
+
+        calculateTime(time, otherStr);
         lv_label_set_text(label_time, otherStr);
         
-        char timeStr[50];
+        //char timeStr[11];
         lv_label_set_text(label_extra, "counting...");
-        lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
-
         
     }
 
@@ -92,16 +90,16 @@ void Stopwatch::startTimer(){
 void Stopwatch::stopTimer(){
     // add paused lavel here
     countingTime = false;
+    elapsedTime = getCurrentTime();
+    lv_label_set_text(label_extra, "paused");
 }
 
 void Stopwatch::restartTimer(){
     elapsedTime = 0.;
 
-    lv_label_set_text(label_time, "RESTART");
-    lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+    lv_label_set_text(label_extra, "RESTART");
 
-    lv_label_set_text(label_extra, "0:0:0.0");
-    lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, 20);
+    lv_label_set_text(label_time, "00.00");
 
     countingTime = false;
 }
@@ -109,7 +107,15 @@ void Stopwatch::restartTimer(){
 double Stopwatch::getCurrentTime() {
   duration<double> delta =
       duration_cast<duration<double>>(dateTimeController.CurrentDateTime() - startTime);
-  return (double) delta.count();
+  return (double) delta.count() + elapsedTime;
+}
+
+void Stopwatch::calculateTime(double timeDifference, char *timeStr){
+    convertToHMS(timeDifference, &miliseconds ,&seconds, &minutes, &hours);
+
+    if (hours > 0) sprintf(timeStr, "%02i:%02i:%02i.%02i", hours, minutes, seconds, miliseconds);
+    else if (minutes > 0) sprintf(timeStr, "%02i:%02i.%02i", minutes, seconds, miliseconds);
+    else sprintf(timeStr, "%02i.%02i", seconds, miliseconds);
 }
 
 void Stopwatch::convertToHMS(double seconds, unsigned short int *ms, unsigned short int *s, unsigned short int *m, unsigned int *h){

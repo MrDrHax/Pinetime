@@ -39,7 +39,7 @@ namespace Pinetime {
                 void startTimer();
                 void stopTimer();
                 void restartTimer();
-                //void calculateTime(double timeDifference, char* timeStr);
+                void calculateTime(double timeDifference, char* timeStr);
                 void convertToHMS(double seconds, unsigned short int *ms, unsigned short int *s, unsigned short int *m, unsigned int *h);
 
                 lv_obj_t * label_time;
