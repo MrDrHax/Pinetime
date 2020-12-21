@@ -21,11 +21,9 @@ Stopwatch::Stopwatch(DisplayApp* app,
   label_time = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
   lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
-  lv_label_set_align(label_time, LV_LABEL_ALIGN_CENTER);
 
   label_info = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_align(label_info, lv_scr_act(), LV_ALIGN_CENTER, 0, -50);
-  lv_label_set_align(label_info, LV_LABEL_ALIGN_CENTER);
+  lv_obj_align(label_info, lv_scr_act(), LV_ALIGN_CENTER, 0, -90);
 
   label_extra = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
@@ -57,7 +55,7 @@ bool Stopwatch::Refresh() {
 }
 
 bool Stopwatch::OnButtonPushed() {
-  running = false;
+  //running = false;
   return true;
 }
 
@@ -82,7 +80,7 @@ bool Stopwatch::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
         }
         return true;
     default:
-        return false;
+        return true;
   }
 }
 
@@ -129,7 +127,7 @@ void Stopwatch::calculateTime(float timeDifference){
         lv_label_set_text(label_time, timeStr);
         lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
         
-        sprintf(timeStr, "%is", seconds);
+        sprintf(timeStr, "%02i", seconds);
 
         lv_label_set_text(label_extra, timeStr);
         lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
@@ -146,7 +144,7 @@ void Stopwatch::calculateTime(float timeDifference){
         lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
     }
     else {
-        sprintf(timeStr, "%02is", seconds); // add ms here when you know how to
+        sprintf(timeStr, "%02i", seconds); // add ms here when you know how to
 
         lv_label_set_text(label_time, timeStr);
         lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
