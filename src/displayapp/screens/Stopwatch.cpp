@@ -25,7 +25,7 @@ Stopwatch::Stopwatch(DisplayApp* app,
 
   label_extra = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
-  lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
+  lv_label_set_style(label_extra, LV_LABEL_STYLE_MAIN, LabelBigStyle);
 
   lv_label_set_text(label_time, "Time v0.0.10");
 }

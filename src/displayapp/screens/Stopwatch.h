@@ -31,7 +31,7 @@ namespace Pinetime {
                 unsigned int hours = 0;
                 unsigned int count = 0;
 
-                static int label_extra_offset;
+                const int label_extra_offset = 80;
 
                 Controllers::DateTime& dateTimeController;
                 std::chrono::system_clock::time_point startTime;
