@@ -23,11 +23,17 @@ Stopwatch::Stopwatch(DisplayApp* app,
   lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
   lv_label_set_align(label_time, LV_LABEL_ALIGN_CENTER);
 
+  label_info = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_align(label_info, lv_scr_act(), LV_ALIGN_CENTER, 0, -50);
+  lv_label_set_align(label_info, LV_LABEL_ALIGN_CENTER);
+
   label_extra = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
   lv_label_set_style(label_extra, LV_LABEL_STYLE_MAIN, LabelBigStyle);
 
-  lv_label_set_text(label_time, "Time v0.0.10");
+  lv_label_set_text(label_time, "00");
+  lv_label_set_text(label_info, "paused");
+
 }
 
 Stopwatch::~Stopwatch() {
@@ -81,6 +87,7 @@ bool Stopwatch::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
 }
 
 void Stopwatch::startTimer(){
+    lv_label_set_text(label_info, "counting");
     startTime = dateTimeController.CurrentDateTime();
 
     countingTime = true;
@@ -89,16 +96,18 @@ void Stopwatch::startTimer(){
 void Stopwatch::stopTimer(){
     // add paused lavel here
     countingTime = false;
-    elapsedTime = getCurrentTime();
-    lv_label_set_text(label_extra, "paused");
+    elapsedTime = 150000000;//getCurrentTime();
+    lv_label_set_text(label_info, "paused");
 }
 
 void Stopwatch::restartTimer(){
     elapsedTime = 0.;
 
-    lv_label_set_text(label_extra, "RESTART");
+    lv_label_set_text(label_info, "paused");
 
-    lv_label_set_text(label_time, "00.00");
+    lv_label_set_text(label_extra, "");
+
+    lv_label_set_text(label_time, "00");
 
     countingTime = false;
 }

@@ -46,6 +46,7 @@ namespace Pinetime {
                 void convertToHMS(int seconds, unsigned short int *ms, unsigned short int *s, unsigned short int *m, unsigned int *h);
 
                 lv_obj_t * label_time;
+                lv_obj_t * label_info;
                 lv_obj_t * label_extra;
             };
         }
