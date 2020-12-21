@@ -44,7 +44,6 @@ bool Stopwatch::Refresh() {
         lv_label_set_text(label_time, otherStr);
         
         char timeStr[50];
-        calculateTime(elapsedTime, timeStr);
         lv_label_set_text(label_extra, "counting...");
         lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
 
