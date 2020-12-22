@@ -12,8 +12,8 @@
 namespace Pinetime {
     namespace Applications {
         namespace Screens {
-            
-            lv_obj_t *img_waitchMain;
+
+            //lv_obj_t *img_waitchMain;
 
             class Stopwatch : public Screen {
                 public:
