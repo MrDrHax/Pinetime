@@ -1,6 +1,6 @@
 #include "../DisplayApp.h"
 #include "components/datetime/DateTimeController.h"
-#include "displayapp/icons/stopwatch/stopwatch_normal.c"
+#include "displayapp/icons/stopwatch/clock0.c"
 #include "Stopwatch.h"
 #include "Symbols.h"
 #include <chrono>
