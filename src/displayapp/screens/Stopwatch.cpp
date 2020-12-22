@@ -268,11 +268,13 @@ bool Stopwatch::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
             // go to next tab
             currentScreen --;
             if (currentScreen < 0) currentScreen = 2;
+            updateCurrentScreen();
             return true;
         case TouchEvents::SwipeRight:
             // go to next tab
             currentScreen ++;
             if (currentScreen > 2) currentScreen = 0; 
+            updateCurrentScreen();
             return true;
         case TouchEvents::SwipeDown:
             restartTimer();
