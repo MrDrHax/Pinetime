@@ -1,6 +1,6 @@
 #include "../DisplayApp.h"
 #include "components/datetime/DateTimeController.h"
-#include "displayapp/icons/stopwatch/clock0.c"
+//#include "displayapp/icons/stopwatch/clock0.c"
 #include "Stopwatch.h"
 #include "Symbols.h"
 #include <chrono>
@@ -15,35 +15,37 @@ extern lv_font_t jetbrains_mono_extrabold_compressed;
 extern lv_font_t jetbrains_mono_bold_20;
 
 extern lv_style_t* LabelBigStyle;
+
+extern lv_img_dsc_t* clock0;
  
-//lv_obj_t *img_waitchMain = lv_img_create(lv_scr_act(), NULL);
+lv_obj_t *img_waitchMain = lv_img_create(lv_scr_act(), NULL);
 
 
 Stopwatch::Stopwatch(DisplayApp* app,
                      Controllers::DateTime& dateTimeController) : Screen(app),
                      dateTimeController{dateTimeController} {
 
-  label_time = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(label_time, "00");
-  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
-  lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
+    label_time = lv_label_create(lv_scr_act(), nullptr);
+    lv_label_set_text(label_time, "00");
+    lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+    lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
 
-  label_info = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(label_info, "paused");
-  lv_obj_align(label_info, lv_scr_act(), LV_ALIGN_CENTER, 0, -80);
+    label_info = lv_label_create(lv_scr_act(), nullptr);
+    lv_label_set_text(label_info, "paused");
+    lv_obj_align(label_info, lv_scr_act(), LV_ALIGN_CENTER, 0, -80);
 
-  label_extra = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(label_extra, "");
-  lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
-  lv_label_set_style(label_extra, LV_LABEL_STYLE_MAIN, LabelBigStyle);
+    label_extra = lv_label_create(lv_scr_act(), nullptr);
+    lv_label_set_text(label_extra, "");
+    lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
+    lv_label_set_style(label_extra, LV_LABEL_STYLE_MAIN, LabelBigStyle);
 
-  // set images
-  //lv_img_set_src(img_waitchMain, &stopwatch_normal); 
-  //lv_obj_align(img_waitchMain, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 0); 
+    // set images
+    lv_img_set_src(img_waitchMain, &clock0); 
+    lv_obj_align(img_waitchMain, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 0); 
 }
 
 Stopwatch::~Stopwatch() {
-  lv_obj_clean(lv_scr_act());
+    lv_obj_clean(lv_scr_act());
 }
 
 bool Stopwatch::Refresh() {
