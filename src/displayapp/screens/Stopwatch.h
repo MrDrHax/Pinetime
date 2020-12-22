@@ -2,7 +2,7 @@
 
 #include "../DisplayApp.h"
 #include "components/datetime/DateTimeController.h"
-//#include "displayapp/icons/stopwatch/stopwatch_normal.c"
+#include "displayapp/icons/stopwatch/stopwatch_normal.c"
 #include "Symbols.h"
 #include "Screen.h"
 #include <chrono>
