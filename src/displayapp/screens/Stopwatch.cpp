@@ -219,7 +219,7 @@ Stopwatch::Stopwatch(DisplayApp* app,
     img_clock4.data = img_clock0_map;
 
     img_src = lv_img_create(lv_scr_act(), NULL);  
-    lv_img_set_src(img_src, &img_clock0);       
+    lv_img_set_src(img_src, &img_clock0);
 
     lv_obj_align(img_src, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 20); 
 }
@@ -295,6 +295,7 @@ bool Stopwatch::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
 
 void Stopwatch::startTimer(){
     lv_img_set_src(img_src, &img_clock2);
+    lv_obj_align(img_src, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 20);
     startTime = dateTimeController.CurrentDateTime();
 
     countingTime = true;
@@ -305,12 +306,14 @@ void Stopwatch::stopTimer(){
     countingTime = false;
     elapsedTime = getCurrentTime();
     lv_img_set_src(img_src, &img_clock1);
+    lv_obj_align(img_src, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 20);
 }
 
 void Stopwatch::restartTimer(){
     elapsedTime = 0;
 
     lv_img_set_src(img_src, &img_clock0);
+    lv_obj_align(img_src, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 20);
 
     lv_label_set_text(label_extra, "");
 
@@ -398,6 +401,7 @@ void Stopwatch::updateCurrentScreen(){
         drawStopwatchScreen();
         break;
     }
+    lv_obj_align(img_src, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 20);
 }
 
 void Stopwatch::drawStopwatchScreen(){
@@ -408,6 +412,10 @@ void Stopwatch::drawStopwatchScreen(){
     lv_label_set_text(label_info, "");
 
     lv_label_set_text(label_time, "00");
+
+    lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+    lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
+    lv_obj_align(label_info, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 40);
 }
 
 void Stopwatch::drawTimerScreen(){
@@ -418,6 +426,10 @@ void Stopwatch::drawTimerScreen(){
     lv_label_set_text(label_info, "wip");
 
     lv_label_set_text(label_time, "00:00");
+
+    lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+    lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
+    lv_obj_align(label_info, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 40);
 }
 
 void Stopwatch::drawAlarmScreen(){
@@ -428,4 +440,8 @@ void Stopwatch::drawAlarmScreen(){
     lv_label_set_text(label_info, "wip");
 
     lv_label_set_text(label_time, "00:00");
+
+    lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
+    lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
+    lv_obj_align(label_info, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 40);
 }
