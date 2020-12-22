@@ -321,8 +321,6 @@ list(APPEND IMAGE_FILES
 
         displayapp/icons/bluetooth/os_bt_connected.c
         displayapp/icons/bluetooth/os_bt_disconnected.c
-
-        displayapp/icons/stopwatch/stopwatch_normal.c
         )
 
 list(APPEND SOURCE_FILES

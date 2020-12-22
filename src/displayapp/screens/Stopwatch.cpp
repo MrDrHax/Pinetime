@@ -15,9 +15,22 @@ extern lv_font_t jetbrains_mono_extrabold_compressed;
 extern lv_font_t jetbrains_mono_bold_20;
 
 extern lv_style_t* LabelBigStyle;
-
-extern lv_img_dsc_t* clock0;
  
+static lv_img_dsc_t img_clock0;
+const uint8_t img_clock0_map[] = {
+    0x04, 0x00, 
+    0x40, 0xa0, 
+    0x24, 0xa0, 
+    0x04, 0xa0, 
+    0x04, 0x00, 
+    0xc4, 0x60, 
+    0x00, 0x00, 
+    0x00, 0x00, 
+    0x20, 0x80, 
+    0x44, 0x40, 
+    0x04, 0x00
+};
+
 lv_obj_t *img_waitchMain = lv_img_create(lv_scr_act(), NULL);
 
 
@@ -40,8 +53,16 @@ Stopwatch::Stopwatch(DisplayApp* app,
     lv_label_set_style(label_extra, LV_LABEL_STYLE_MAIN, LabelBigStyle);
 
     // set images
-    lv_img_set_src(img_waitchMain, &clock0); 
-    lv_obj_align(img_waitchMain, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 0); 
+    img_clock0.header.always_zero = 0; //Initialization
+    img_clock0.header.w = 11;
+    img_clock0.header.h = 11;
+    img_clock0.data_size = 22; 
+    img_clock0.header.cf = LV_IMG_CF_ALPHA_1BIT; 
+    img_clock0.data = img_clock0_map;
+    lv_obj_t *img_src = lv_img_create(lv_scr_act(), NULL);  
+    lv_img_set_src(img_src, &img_clock0);       
+
+    lv_obj_align(img_src, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 0); 
 }
 
 Stopwatch::~Stopwatch() {
