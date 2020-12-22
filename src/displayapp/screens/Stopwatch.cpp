@@ -45,6 +45,122 @@ const uint8_t img_clock0_map[] = {
     0x00, 0x1c, 0x00, 0x00
 };
 
+static lv_img_dsc_t img_clock1;
+const uint8_t img_clock1_map[] = {
+    0x00, 0x1c, 0x00, 0x00, 
+    0x00, 0x1c, 0x66, 0x00, 
+    0x30, 0x1c, 0x66, 0x00, 
+    0x38, 0x1c, 0x66, 0x00, 
+    0x1c, 0x00, 0x66, 0x00, 
+    0x0c, 0x00, 0x66, 0x00, 
+    0x02, 0x00, 0x66, 0x00, 
+    0x01, 0x00, 0x00, 0x00, 
+    0x00, 0x80, 0x00, 0x00, 
+    0x00, 0x40, 0x00, 0x00, 
+    0x00, 0x20, 0x00, 0x00, 
+    0xf0, 0x18, 0x07, 0x80, 
+    0xf0, 0x1c, 0x07, 0x80, 
+    0xf0, 0x1c, 0x07, 0x80, 
+    0x00, 0x1c, 0x00, 0x00, 
+    0x00, 0x1c, 0x00, 0x00, 
+    0x00, 0x08, 0x00, 0x00, 
+    0x00, 0x08, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 
+    0x0c, 0x00, 0x18, 0x00, 
+    0x1c, 0x00, 0x1c, 0x00, 
+    0x38, 0x1c, 0x0e, 0x00, 
+    0x30, 0x1c, 0x06, 0x00, 
+    0x00, 0x1c, 0x00, 0x00, 
+    0x00, 0x1c, 0x00, 0x00
+};
+
+static lv_img_dsc_t img_clock2;
+const uint8_t img_clock2_map[] = {
+    0x00, 0x1c, 0x00, 0x00, 
+    0x00, 0x1d, 0x80, 0x00, 
+    0x30, 0x1d, 0xe0, 0x00, 
+    0x38, 0x1d, 0xf8, 0x00, 
+    0x1c, 0x01, 0xfe, 0x00, 
+    0x0c, 0x01, 0xff, 0x80, 
+    0x02, 0x01, 0xfe, 0x00, 
+    0x01, 0x01, 0xf8, 0x00, 
+    0x00, 0x81, 0xe0, 0x00, 
+    0x00, 0x41, 0x80, 0x00, 
+    0x00, 0x20, 0x00, 0x00, 
+    0xf0, 0x18, 0x07, 0x80, 
+    0xf0, 0x1c, 0x07, 0x80, 
+    0xf0, 0x1c, 0x07, 0x80, 
+    0x00, 0x1c, 0x00, 0x00, 
+    0x00, 0x1c, 0x00, 0x00, 
+    0x00, 0x08, 0x00, 0x00, 
+    0x00, 0x08, 0x00, 0x00, 
+    0x00, 0x00, 0x00, 0x00, 
+    0x0c, 0x00, 0x18, 0x00, 
+    0x1c, 0x00, 0x1c, 0x00, 
+    0x38, 0x1c, 0x0e, 0x00, 
+    0x30, 0x1c, 0x06, 0x00, 
+    0x00, 0x1c, 0x00, 0x00, 
+    0x00, 0x1c, 0x00, 0x00
+};
+
+static lv_img_dsc_t img_clock3;
+const uint8_t img_clock3_map[] = {
+    0x00, 0x1c, 0x00, 0x00, 
+    0x00, 0x1c, 0x00, 0x00, 
+    0x30, 0x00, 0x06, 0x00, 
+    0x38, 0x0c, 0x0e, 0x00, 
+    0x1c, 0x0f, 0x9c, 0x00, 
+    0x0c, 0x0f, 0xd8, 0x00, 
+    0x00, 0x0f, 0xe0, 0x00, 
+    0x00, 0x0f, 0xf0, 0x00, 
+    0x00, 0x0f, 0xf8, 0x00, 
+    0x00, 0x0f, 0xf8, 0x00, 
+    0x00, 0x0f, 0xf8, 0x00, 
+    0xf0, 0x0f, 0xfd, 0x80, 
+    0xf0, 0x0f, 0xfd, 0x80, 
+    0xf0, 0x1f, 0xfd, 0x80, 
+    0x00, 0x3f, 0xf8, 0x00, 
+    0x00, 0x7f, 0xf8, 0x00, 
+    0x00, 0x7f, 0xf8, 0x00, 
+    0x00, 0xff, 0xf0, 0x00, 
+    0x00, 0xff, 0xe0, 0x00, 
+    0x0d, 0xff, 0xd8, 0x00, 
+    0x1c, 0xff, 0x9c, 0x00, 
+    0x38, 0x1c, 0x0e, 0x00, 
+    0x30, 0x00, 0x06, 0x00, 
+    0x00, 0x1c, 0x00, 0x00, 
+    0x00, 0x1c, 0x00, 0x00
+};
+
+static lv_img_dsc_t img_clock4;
+const uint8_t img_clock4_map[] = {
+    0x00, 0x1c, 0x00, 0x00, 
+    0x00, 0x3e, 0x00, 0x00, 
+    0x60, 0x7f, 0x03, 0x00, 
+    0xf0, 0x00, 0x07, 0x80, 
+    0xe0, 0x3e, 0x03, 0x80, 
+    0x58, 0xff, 0x8d, 0x00, 
+    0x1f, 0xc1, 0xfc, 0x00, 
+    0x0f, 0x00, 0x78, 0x00, 
+    0x0e, 0x00, 0x18, 0x00, 
+    0x0d, 0x00, 0x18, 0x00, 
+    0x18, 0x80, 0x0c, 0x00, 
+    0x18, 0x40, 0x0c, 0x00, 
+    0x30, 0x20, 0x06, 0x00, 
+    0x30, 0x18, 0x06, 0x00, 
+    0x30, 0x1c, 0x06, 0x00, 
+    0x30, 0x1c, 0x06, 0x00, 
+    0x30, 0x1c, 0x06, 0x00, 
+    0x18, 0x08, 0x0c, 0x00, 
+    0x18, 0x08, 0x0c, 0x00, 
+    0x0c, 0x00, 0x18, 0x00, 
+    0x0e, 0x00, 0x38, 0x00, 
+    0x07, 0x00, 0x70, 0x00, 
+    0x0b, 0xc1, 0xe8, 0x00, 
+    0x18, 0xff, 0x8c, 0x00, 
+    0x10, 0x3e, 0x04, 0x00
+};
+
 lv_obj_t *img_waitchMain = lv_img_create(lv_scr_act(), NULL);
 
 
@@ -54,11 +170,11 @@ Stopwatch::Stopwatch(DisplayApp* app,
 
     label_time = lv_label_create(lv_scr_act(), nullptr);
     lv_label_set_text(label_time, "00");
-    lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
     lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
+    lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
 
     label_info = lv_label_create(lv_scr_act(), nullptr);
-    lv_label_set_text(label_info, "paused");
+    lv_label_set_text(label_info, "");
     lv_obj_align(label_info, lv_scr_act(), LV_ALIGN_CENTER, 0, -80);
 
     label_extra = lv_label_create(lv_scr_act(), nullptr);
@@ -73,10 +189,39 @@ Stopwatch::Stopwatch(DisplayApp* app,
     img_clock0.data_size = 100; 
     img_clock0.header.cf = LV_IMG_CF_ALPHA_1BIT; 
     img_clock0.data = img_clock0_map;
-    lv_obj_t *img_src = lv_img_create(lv_scr_act(), NULL);  
+
+    img_clock1.header.always_zero = 0; //Initialization
+    img_clock1.header.w = 25;
+    img_clock1.header.h = 25;
+    img_clock1.data_size = 100; 
+    img_clock1.header.cf = LV_IMG_CF_ALPHA_1BIT; 
+    img_clock1.data = img_clock0_map;
+
+    img_clock2.header.always_zero = 0; //Initialization
+    img_clock2.header.w = 25;
+    img_clock2.header.h = 25;
+    img_clock2.data_size = 100; 
+    img_clock2.header.cf = LV_IMG_CF_ALPHA_1BIT; 
+    img_clock2.data = img_clock0_map;
+
+    img_clock3.header.always_zero = 0; //Initialization
+    img_clock3.header.w = 25;
+    img_clock3.header.h = 25;
+    img_clock3.data_size = 100; 
+    img_clock3.header.cf = LV_IMG_CF_ALPHA_1BIT; 
+    img_clock3.data = img_clock0_map;
+
+    img_clock4.header.always_zero = 0; //Initialization
+    img_clock4.header.w = 25;
+    img_clock4.header.h = 25;
+    img_clock4.data_size = 100; 
+    img_clock4.header.cf = LV_IMG_CF_ALPHA_1BIT; 
+    img_clock4.data = img_clock0_map;
+
+    img_src = lv_img_create(lv_scr_act(), NULL);  
     lv_img_set_src(img_src, &img_clock0);       
 
-    lv_obj_align(img_src, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 0); 
+    lv_obj_align(img_src, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 20); 
 }
 
 Stopwatch::~Stopwatch() {
@@ -84,15 +229,30 @@ Stopwatch::~Stopwatch() {
 }
 
 bool Stopwatch::Refresh() {
-    if (countingTime){
-        //1st count new time
+    switch (currentScreen)
+    {
+    case 0:
+        if (countingTime){
+            //1st count new time
 
-        int time = getCurrentTime();
+            int time = getCurrentTime();
 
-        // 2nd update timer label
+            // 2nd update timer label
 
-        calculateTime(time);
+            calculateTime(time);
+        }
+        break;
+    
+    case 1:
+        break;
+
+    case 2:
+        break;
+
+    default:
+        break;
     }
+    
 
     return running;
 }
@@ -103,32 +263,36 @@ bool Stopwatch::OnButtonPushed() {
 }
 
 bool Stopwatch::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
-  switch(event) {
-    case TouchEvents::SwipeLeft:
-        // go to next tab
-        return true;
-    case TouchEvents::SwipeRight:
-        // go to next tab
-        return true;
-    case TouchEvents::SwipeDown:
-        restartTimer();
-        return true;
-    case TouchEvents::Tap:
-        // get tap
-        if (countingTime){
-            stopTimer();
-        }
-        else{
-            startTimer();
-        }
-        return true;
-    default:
-        return true;
-  }
+    switch(event) {
+        case TouchEvents::SwipeLeft:
+            // go to next tab
+            currentScreen --;
+            if (currentScreen < 0) currentScreen = 2;
+            return true;
+        case TouchEvents::SwipeRight:
+            // go to next tab
+            currentScreen ++;
+            if (currentScreen > 2) currentScreen = 0; 
+            return true;
+        case TouchEvents::SwipeDown:
+            restartTimer();
+            return true;
+        case TouchEvents::Tap:
+            // get tap
+            if (countingTime){
+                stopTimer();
+            }
+            else{
+                startTimer();
+            }
+            return true;
+        default:
+            return true;
+    }
 }
 
 void Stopwatch::startTimer(){
-    lv_label_set_text(label_info, "counting");
+    lv_img_set_src(img_src, &img_clock2);
     startTime = dateTimeController.CurrentDateTime();
 
     countingTime = true;
@@ -138,13 +302,13 @@ void Stopwatch::stopTimer(){
     // add paused lavel here
     countingTime = false;
     elapsedTime = getCurrentTime();
-    lv_label_set_text(label_info, "paused");
+    lv_img_set_src(img_src, &img_clock1);
 }
 
 void Stopwatch::restartTimer(){
     elapsedTime = 0;
 
-    lv_label_set_text(label_info, "paused");
+    lv_img_set_src(img_src, &img_clock0);
 
     lv_label_set_text(label_extra, "");
 
@@ -212,4 +376,54 @@ void Stopwatch::convertToHMS(int seconds, unsigned short int *ms, unsigned short
     *s = temp / multiplier;
     temp -= *s * multiplier;
     *ms = temp;
+}
+
+
+void Stopwatch::updateCurrentScreen(){
+    switch (currentScreen)
+    {
+    case 0:
+        drawStopwatchScreen();
+        break;
+    case 1:
+        drawTimerScreen();
+        break;
+    case 2:
+        drawAlarmScreen();
+        break;
+    
+    default:
+        drawStopwatchScreen();
+        break;
+    }
+}
+
+void Stopwatch::drawStopwatchScreen(){
+    lv_img_set_src(img_src, &img_clock0);
+
+    lv_label_set_text(label_extra, "");
+
+    lv_label_set_text(label_info, "");
+
+    lv_label_set_text(label_time, "00");
+}
+
+void Stopwatch::drawTimerScreen(){
+    lv_img_set_src(img_src, &img_clock3);
+
+    lv_label_set_text(label_extra, "00");
+
+    lv_label_set_text(label_info, "wip");
+
+    lv_label_set_text(label_time, "00:00");
+}
+
+void Stopwatch::drawAlarmScreen(){
+    lv_img_set_src(img_src, &img_clock4);
+
+    lv_label_set_text(label_extra, "");
+
+    lv_label_set_text(label_info, "wip");
+
+    lv_label_set_text(label_time, "00:00");
 }

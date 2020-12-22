@@ -44,6 +44,8 @@ namespace Pinetime {
                 std::chrono::system_clock::time_point startTime;
                 std::chrono::system_clock::time_point endTime;
 
+                lv_obj_t *img_src;
+
                 int getCurrentTime();
 
                 void startTimer();
@@ -55,6 +57,14 @@ namespace Pinetime {
                 lv_obj_t * label_time;
                 lv_obj_t * label_info;
                 lv_obj_t * label_extra;
+
+                int8_t currentScreen = 0;
+
+                void updateCurrentScreen();
+
+                void drawStopwatchScreen();
+                void drawTimerScreen();
+                void drawAlarmScreen();
             };
         }
     }
