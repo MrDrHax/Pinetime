@@ -5,10 +5,16 @@
 #include "Symbols.h"
 #include "Screen.h"
 #include <chrono>
+#include <cstdio>
+
+
 
 namespace Pinetime {
     namespace Applications {
         namespace Screens {
+            
+            lv_obj_t *img_waitchMain;
+
             class Stopwatch : public Screen {
                 public:
                 Stopwatch(DisplayApp *app, Controllers::DateTime& dateTimeController);

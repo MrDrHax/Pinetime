@@ -4,7 +4,7 @@
 #include "Stopwatch.h"
 #include "Symbols.h"
 #include <chrono>
-//#include <cstdio>
+#include <cstdio>
 
 using namespace Pinetime::Applications::Screens;
 
