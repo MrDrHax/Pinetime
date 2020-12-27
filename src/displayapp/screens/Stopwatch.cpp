@@ -161,9 +161,6 @@ const uint8_t img_clock4_map[] = {
     0x10, 0x3e, 0x04, 0x00
 };
 
-lv_obj_t *img_waitchMain = lv_img_create(lv_scr_act(), NULL);
-
-
 Stopwatch::Stopwatch(DisplayApp* app,
                      Controllers::DateTime& dateTimeController) : Screen(app),
                      dateTimeController{dateTimeController} {
@@ -218,10 +215,9 @@ Stopwatch::Stopwatch(DisplayApp* app,
     img_clock4.header.cf = LV_IMG_CF_ALPHA_1BIT; 
     img_clock4.data = img_clock0_map;
 
-    img_src = lv_img_create(lv_scr_act(), NULL);  
-    lv_img_set_src(img_src, &img_clock0);
+    changeClockIMG(img_clock0);
 
-    lv_obj_align(img_src, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 20); 
+    timerEnd = std::chrono::system_clock::from_time_t(0);
 }
 
 Stopwatch::~Stopwatch() {
@@ -244,6 +240,18 @@ bool Stopwatch::Refresh() {
         break;
     
     case 1:
+        if (timerCountingTime){
+            
+        }
+        else{
+            // 1st count new time
+
+            int time = timerEnd.time_since_epoch().count();
+
+            // 2nd update timer label
+
+            calculateTime(time);
+        }
         break;
 
     case 2:
@@ -263,39 +271,81 @@ bool Stopwatch::OnButtonPushed() {
 }
 
 bool Stopwatch::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
-    switch(event) {
-        case TouchEvents::SwipeLeft:
-            // go to next tab
-            currentScreen --;
-            if (currentScreen < 0) currentScreen = 2;
-            updateCurrentScreen();
-            return true;
-        case TouchEvents::SwipeRight:
-            // go to next tab
-            currentScreen ++;
-            if (currentScreen > 2) currentScreen = 0; 
-            updateCurrentScreen();
-            return true;
-        case TouchEvents::SwipeDown:
-            restartTimer();
-            return true;
-        case TouchEvents::Tap:
-            // get tap
-            if (countingTime){
-                stopTimer();
-            }
-            else{
-                startTimer();
-            }
-            return true;
-        default:
-            return true;
+    switch (currentScreen)
+    {
+    case 0: // make this in case of stopwatch
+        switch(event) {
+            case TouchEvents::SwipeLeft:
+                // go to next tab
+                currentScreen --;
+                if (currentScreen < 0) currentScreen = 2;
+                updateCurrentScreen();
+                return true;
+            case TouchEvents::SwipeRight:
+                // go to next tab
+                currentScreen ++;
+                if (currentScreen > 2) currentScreen = 0; 
+                updateCurrentScreen();
+                return true;
+            case TouchEvents::SwipeDown:
+                restartTimer();
+                return true;
+            case TouchEvents::Tap:
+                // get tap
+                if (countingTime){
+                    stopTimer();
+                }
+                else{
+                    startTimer();
+                }
+                return true;
+            default:
+                return true;
+        }
+        break;
+    
+    case 1:
+        switch(event) {
+            case TouchEvents::SwipeLeft:
+                // go to next tab
+                currentScreen --;
+                if (currentScreen < 0) currentScreen = 2;
+                updateCurrentScreen();
+                return true;
+            case TouchEvents::SwipeRight:
+                // go to next tab
+                currentScreen ++;
+                if (currentScreen > 2) currentScreen = 0; 
+                updateCurrentScreen();
+                return true;
+            case TouchEvents::SwipeDown:
+                // reduce amount of time
+                timerEnd -= std::chrono::minutes(1);
+                return true;
+            case TouchEvents::SwipeUp:
+                // aument the time untill the end
+                timerEnd += std::chrono::minutes(1);
+                return true;
+            case TouchEvents::Tap:
+                // get tap
+                // start the countdown here
+                return true;
+            default:
+                return true;
+        }
+        break;
+
+    case 2:
+        break;
+
+    default:
+        return false;
     }
+    
 }
 
 void Stopwatch::startTimer(){
-    lv_img_set_src(img_src, &img_clock2);
-    lv_obj_align(img_src, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 20);
+    changeClockIMG(img_clock2);
     startTime = dateTimeController.CurrentDateTime();
 
     countingTime = true;
@@ -305,8 +355,7 @@ void Stopwatch::stopTimer(){
     // add paused lavel here
     countingTime = false;
     elapsedTime = getCurrentTime();
-    lv_img_set_src(img_src, &img_clock1);
-    lv_obj_align(img_src, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 20);
+    changeClockIMG(img_clock1);
 }
 
 void Stopwatch::restartTimer(){
@@ -419,21 +468,21 @@ void Stopwatch::drawStopwatchScreen(){
 }
 
 void Stopwatch::drawTimerScreen(){
-    lv_img_set_src(img_src, &img_clock3);
+    changeClockIMG(img_clock3);
 
     lv_label_set_text(label_extra, "00");
 
-    lv_label_set_text(label_info, "wip");
+    lv_label_set_text(label_info, "timer 1");
 
     lv_label_set_text(label_time, "00:00");
 
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
     lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
-    lv_obj_align(label_info, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 40);
+    lv_obj_align(label_info, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 50);
 }
 
 void Stopwatch::drawAlarmScreen(){
-    lv_img_set_src(img_src, &img_clock4);
+    changeClockIMG(img_clock4);
 
     lv_label_set_text(label_extra, "");
 
@@ -444,4 +493,11 @@ void Stopwatch::drawAlarmScreen(){
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
     lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
     lv_obj_align(label_info, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 40);
+}
+
+void Stopwatch::changeClockIMG(lv_img_dsc_t newImage){
+    img_src = lv_img_create(lv_scr_act(), NULL);  
+    lv_img_set_src(img_src, &newImage);
+
+    lv_obj_align(img_src, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 15);
 }

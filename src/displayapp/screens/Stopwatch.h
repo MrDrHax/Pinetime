@@ -7,12 +7,21 @@
 #include "Screen.h"
 #include <chrono>
 #include <cstdio>
+#include <vector>
 
 
 
 namespace Pinetime {
     namespace Applications {
         namespace Screens {
+
+            class TimeAlarm{
+                unsigned short int minutes = 0;
+                unsigned int hours = 0;
+                unsigned int count = 0;
+
+                bool weekdays[7] = {false, false, false, false, false, false, false};
+            };
 
             //lv_obj_t *img_waitchMain;
 
@@ -29,6 +38,7 @@ namespace Pinetime {
                 bool running = true;
 
                 bool countingTime = false;
+                bool timerCountingTime = false;
 
                 float elapsedTime = 0.;
 
@@ -65,6 +75,17 @@ namespace Pinetime {
                 void drawStopwatchScreen();
                 void drawTimerScreen();
                 void drawAlarmScreen();
+
+                void changeClockIMG(lv_img_dsc_t newImage);
+
+                // counter things
+
+                std::chrono::system_clock::time_point timerEnd;
+                std::chrono::system_clock::time_point timerToAdd;
+
+                // alarm things
+
+                std::vector<TimeAlarm> alarms;
             };
         }
     }
