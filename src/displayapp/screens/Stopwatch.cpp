@@ -241,7 +241,7 @@ bool Stopwatch::Refresh() {
     
     case 1:
         if (timerCountingTime){
-            
+
         }
         else{
             // 1st count new time
@@ -341,7 +341,7 @@ bool Stopwatch::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
     default:
         return false;
     }
-    
+    return true;
 }
 
 void Stopwatch::startTimer(){
