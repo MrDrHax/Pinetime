@@ -49,7 +49,7 @@ namespace Pinetime {
           bool OnButtonPushed() override;
 
           void OnObjectEvent(lv_obj_t *pObj, lv_event_t i);
-          bool OnTouchEvent(Pinetime::Applications::TouchEvents event);
+          //bool OnTouchEvent(Pinetime::Applications::TouchEvents event);
         private:
           static const char* MonthToString(Pinetime::Controllers::DateTime::Months month);
           static const char* DayOfWeekToString(Pinetime::Controllers::DateTime::Days dayOfWeek);

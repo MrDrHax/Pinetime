@@ -247,6 +247,7 @@ void Clock::OnObjectEvent(lv_obj_t *obj, lv_event_t event) {
   }
 }
 
+/*
 bool Clock::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
   switch(event) {
     
@@ -264,6 +265,7 @@ bool Clock::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
        return false;
   }
 }
+*/
 
 bool Clock::OnButtonPushed() {
   running = false;
