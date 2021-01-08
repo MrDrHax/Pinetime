@@ -16,9 +16,32 @@ using namespace Pinetime::Applications::Screens;
 //I think if we wnat to use a different font, we should just insert it here. 
 extern lv_font_t jetbrains_mono_extrabold_compressed;
 extern lv_font_t jetbrains_mono_bold_20;
-extern lv_font_t 
+// extern lv_font_t PressStart2p_8p;
 extern lv_style_t* LabelBigStyle;
 
+// TODO:
+/*
+  1) make the clock align left, to make room for AM / PM labels
+    -make new labels
+    -make devider
+    -make AM/PM appear
+  2) find out how to draw lines
+  3) find out how to draw in different colours
+    -make AM/PM labels be drawn in different shade depending on what is active
+    -add orange
+    -decide what other colourScheme we can make
+  4) align objects
+    -separate date into 2 objects
+    -align heartbeat and steps to left
+    -get extra steps
+  5) search how to recognize different touches (like swipe or long press)
+    -make swipe down oppen app (can be anyone for the timebeing)
+  6) be able to change from AM/PM to 24h clock
+    -make long press change bool
+    -make bool check AM/PM or 24h
+
+  - after this, notification list will be planned
+*/
 
 static void event_handler(lv_obj_t * obj, lv_event_t event) {
   Clock* screen = static_cast<Clock *>(obj->user_data);
