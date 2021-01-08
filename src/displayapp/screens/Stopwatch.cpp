@@ -454,8 +454,6 @@ void Stopwatch::updateCurrentScreen(){
 }
 
 void Stopwatch::drawStopwatchScreen(){
-    lv_img_set_src(img_src, &img_clock0);
-
     lv_label_set_text(label_extra, "");
 
     lv_label_set_text(label_info, "");
