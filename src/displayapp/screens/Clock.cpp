@@ -125,7 +125,7 @@ bool Clock::Refresh() {
 
   currentDateTime = dateTimeController.CurrentDateTime();
 
-  if(currentDateTime.IsUpdated()) {
+  if(currentDateTime.IsUpdated()) { // update to date and time
     auto newDateTime = currentDateTime.Get();
 
     auto dp = date::floor<date::days>(newDateTime);
@@ -143,6 +143,13 @@ bool Clock::Refresh() {
     char minutesChar[3];
     sprintf(minutesChar, "%02d", static_cast<int>(minute));
 
+    if (hour > 12){ // AM PM function
+      hour -= 12;
+      lv_label_set_text(label_AMPM, "PM");
+    }
+    else{
+      lv_label_set_text(label_AMPM, "AM");
+    }
     char hoursChar[3];
     sprintf(hoursChar, "%02d", static_cast<int>(hour));
 
@@ -159,9 +166,12 @@ bool Clock::Refresh() {
     }
 
     if ((year != currentYear) || (month != currentMonth) || (dayOfWeek != currentDayOfWeek) || (day != currentDay)) {
-      char dateStr[22];
-      sprintf(dateStr, "%s %d %s %d", DayOfWeekToString(dayOfWeek), day, MonthToString(month), year);
-      lv_label_set_text(label_date, dateStr);
+      char dateStr[7];
+      char dateStr2[7];
+      sprintf(dateStr , "%s %d", DayOfWeekToString(dayOfWeek), day);
+      sprintf(dateStr2, "%s %d", MonthToString(month), year);
+      lv_label_set_text(label_date , dateStr );
+      lv_label_set_text(label_date2, dateStr2);
 
 
       currentYear = year;
@@ -203,13 +213,13 @@ const char *Clock::DayOfWeekToString(Pinetime::Controllers::DateTime::Days dayOf
 
 char const *Clock::DaysString[] = {
         "",
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
+        "MON",
+        "TUE",
+        "WED",
+        "THU",
+        "FRI",
+        "SAT",
+        "SUN"
 };
 
 char const *Clock::MonthsString[] = {
