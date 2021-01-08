@@ -1029,13 +1029,13 @@ static const lv_font_fmt_txt_glyph_dsc_t glyph_dsc[] = {
  *  CHARACTER MAPPING
  *--------------------*/
 
-/*
+
 static const uint16_t unicode_list_2[] = {
     0x0, 0x16, 0x39, 0x68, 0x128, 0x184, 0x1e5, 0x1fb,
     0x21d, 0x23f, 0x240, 0x241, 0x242, 0x243, 0x292, 0x293,
     0x3fc, 0x45c, 0x54a, 0x55f
 };
-*/
+
 
 /*Collect the unicode lists and glyph_id offsets*/
 static const lv_font_fmt_txt_cmap_t cmaps[] =
