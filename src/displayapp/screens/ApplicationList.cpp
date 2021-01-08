@@ -45,7 +45,7 @@ std::unique_ptr<Screen> ApplicationList::CreateScreen1() {
           {Symbols::sun, Apps::Brightness},
           {Symbols::list, Apps::SysInfo},
           {Symbols::check, Apps::FirmwareValidation},
-          {Symbols::clock, Apps::Stopwatch}
+          {Symbols::none, Apps::None}
           }
 
 

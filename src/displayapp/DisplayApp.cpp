@@ -12,7 +12,6 @@
 #include "displayapp/screens/Gauge.h"
 #include "displayapp/screens/InfiniPaint.h"
 #include "displayapp/screens/Paddle.h"
-#include "displayapp/screens/Stopwatch.h"
 #include "displayapp/screens/Meter.h"
 #include "displayapp/screens/Music.h"
 #include "displayapp/screens/Notifications.h"
@@ -212,7 +211,6 @@ void DisplayApp::RunningState() {
       case Apps::Music : currentScreen.reset(new Screens::Music(this, systemTask.nimble().music())); break;
       case Apps::FirmwareValidation: currentScreen.reset(new Screens::FirmwareValidation(this, validator)); break;
       case Apps::Notifications: currentScreen.reset(new Screens::Notifications(this, notificationManager, Screens::Notifications::Modes::Normal)); break;
-      case Apps::Stopwatch: currentScreen.reset(new Screens::Stopwatch(this, dateTimeController)); break;
     }
     nextApp = Apps::None;
   }

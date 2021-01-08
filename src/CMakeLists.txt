@@ -332,7 +332,6 @@ list(APPEND SOURCE_FILES
         displayapp/screens/Clock.cpp
         displayapp/screens/Tile.cpp
         displayapp/screens/Meter.cpp
-        displayapp/screens/Stopwatch.cpp
         displayapp/screens/Gauge.cpp
         displayapp/screens/InfiniPaint.cpp
         displayapp/screens/Paddle.cpp
