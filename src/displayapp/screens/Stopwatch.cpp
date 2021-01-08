@@ -266,6 +266,7 @@ bool Stopwatch::Refresh() {
 }
 
 bool Stopwatch::OnButtonPushed() {
+    // TODO add here save states
   running = false;
   return true;
 }

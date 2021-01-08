@@ -13,6 +13,7 @@
 #include "displayapp/screens/InfiniPaint.h"
 #include "displayapp/screens/Paddle.h"
 #include "displayapp/screens/Meter.h"
+#include "displayapp/screens/Stopwatch.h"
 #include "displayapp/screens/Music.h"
 #include "displayapp/screens/Notifications.h"
 #include "displayapp/screens/SystemInfo.h"
@@ -25,11 +26,13 @@
 
 using namespace Pinetime::Applications;
 
+// start displayapp
 DisplayApp::DisplayApp(Drivers::St7789 &lcd, Components::LittleVgl &lvgl, Drivers::Cst816S &touchPanel,
                        Controllers::Battery &batteryController, Controllers::Ble &bleController,
                        Controllers::DateTime &dateTimeController, Drivers::WatchdogView &watchdog,
                        System::SystemTask &systemTask,
                        Pinetime::Controllers::NotificationManager& notificationManager) :
+        // inicialization list
         lcd{lcd},
         lvgl{lvgl},
         batteryController{batteryController},
@@ -42,7 +45,7 @@ DisplayApp::DisplayApp(Drivers::St7789 &lcd, Components::LittleVgl &lvgl, Driver
         notificationManager{notificationManager} {
   msgQueue = xQueueCreate(queueSize, itemSize);
   onClockApp = true;
-  modal.reset(new Screens::Modal(this));
+  modal.reset(new Screens::Modal(this)); // if new notification comes do this?
 }
 
 void DisplayApp::Start() {
@@ -186,7 +189,7 @@ void DisplayApp::Refresh() {
   }
 }
 
-void DisplayApp::RunningState() {
+void DisplayApp::RunningState() { // application switcher screens add here info to app
 //  clockScreen.SetCurrentDateTime(dateTimeController.CurrentDateTime());
 
   if(!currentScreen->Refresh()) {
@@ -211,6 +214,7 @@ void DisplayApp::RunningState() {
       case Apps::Music : currentScreen.reset(new Screens::Music(this, systemTask.nimble().music())); break;
       case Apps::FirmwareValidation: currentScreen.reset(new Screens::FirmwareValidation(this, validator)); break;
       case Apps::Notifications: currentScreen.reset(new Screens::Notifications(this, notificationManager, Screens::Notifications::Modes::Normal)); break;
+      case Apps::Stopwatch: currentScreen.reset(new Screens::Stopwatch(this, dateTimeController)); break;
     }
     nextApp = Apps::None;
   }
@@ -231,6 +235,7 @@ void DisplayApp::PushMessage(DisplayApp::Messages msg) {
   }
 }
 
+// touch events mannager ---------------------------------------------------------------------------------------
 TouchEvents DisplayApp::OnTouchEvent() {
   auto info = touchPanel.GetTouchInfo();
   if(info.isTouch) {
@@ -259,10 +264,13 @@ TouchEvents DisplayApp::OnTouchEvent() {
   return TouchEvents::None;
 }
 
+// next app summoner ----------------------------------------------------------------------------------------------------
 void DisplayApp::StartApp(Apps app) {
   nextApp = app;
 }
 
+
+// refresh app -----------------------------------------------------------------------------------------------------------
 void DisplayApp::SetFullRefresh(DisplayApp::FullRefreshDirections direction) {
   switch(direction){
     case DisplayApp::FullRefreshDirections::Down:
@@ -276,6 +284,7 @@ void DisplayApp::SetFullRefresh(DisplayApp::FullRefreshDirections direction) {
 
 }
 
+// change touch mode -----------------------------------------------------------------------------------------------------
 void DisplayApp::SetTouchMode(DisplayApp::TouchModes mode) {
   touchMode = mode;
 }

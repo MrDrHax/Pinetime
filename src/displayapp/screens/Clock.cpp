@@ -13,9 +13,11 @@
 #include "../DisplayApp.h"
 
 using namespace Pinetime::Applications::Screens;
+//Creo que si queremos usar otra font, simplemente las ponemos aquí
 extern lv_font_t jetbrains_mono_extrabold_compressed;
 extern lv_font_t jetbrains_mono_bold_20;
 extern lv_style_t* LabelBigStyle;
+
 
 static void event_handler(lv_obj_t * obj, lv_event_t event) {
   Clock* screen = static_cast<Clock *>(obj->user_data);
@@ -34,6 +36,8 @@ Clock::Clock(DisplayApp* app,
   displayedChar[2] = 0;
   displayedChar[3] = 0;
   displayedChar[4] = 0;
+
+  // set icons for every item that needs one
 
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(batteryIcon, Symbols::batteryFull);
@@ -94,15 +98,21 @@ Clock::~Clock() {
   lv_obj_clean(lv_scr_act());
 }
 
-bool Clock::Refresh() {
+bool Clock::Refresh() { // gets called every frame
+
+  // info icons -----------------------------------------------------------------------------------------------
+  // change battery percentage
   batteryPercentRemaining = batteryController.PercentRemaining();
-  if (batteryPercentRemaining.IsUpdated()) {
+  if (batteryPercentRemaining.IsUpdated()) { // do something if battery is changed, and change icon to resemblance percentage
     auto batteryPercent = batteryPercentRemaining.Get();
     lv_label_set_text(batteryIcon, BatteryIcon::GetBatteryIcon(batteryPercent));
+    //Creo que si quisieramos poner el %, en vez del ícono, sería:
+    // lv_label_set_text(batteryIcon, batteryPercent); //Aunque, creo que era float, pq lo que se tiene que hacer un cambio. 
     auto isCharging = batteryController.IsCharging() || batteryController.IsPowerPresent();
     lv_label_set_text(batteryPlug, BatteryIcon::GetPlugIcon(isCharging));
   }
 
+  // check if ble is connected, and display if it is
   bleState = bleController.IsConnected();
   if (bleState.IsUpdated()) {
     if(bleState.Get() == true) {
@@ -111,9 +121,14 @@ bool Clock::Refresh() {
       lv_label_set_text(bleIcon, BleIcon::GetIcon(false));
     }
   }
+
+  // icon alligment
+
   lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -5, 5);
   lv_obj_align(batteryPlug, batteryIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
   lv_obj_align(bleIcon, batteryPlug, LV_ALIGN_OUT_LEFT_MID, -5, 0);
+
+  // notifications ----------------------------------------------------------------------------------------------------
 
   notificationState = notificatioManager.AreNewNotificationsAvailable();
   if(notificationState.IsUpdated()) {
@@ -123,23 +138,29 @@ bool Clock::Refresh() {
       lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(false));
   }
 
-  currentDateTime = dateTimeController.CurrentDateTime();
+  // date and time ----------------------------------------------------------------------------------------------------
 
-  if(currentDateTime.IsUpdated()) {
+  currentDateTime = dateTimeController.CurrentDateTime(); // get new time
+
+  if(currentDateTime.IsUpdated()) { // update the clock if it needs to be updated
     auto newDateTime = currentDateTime.Get();
 
+    // start separating date from time
     auto dp = date::floor<date::days>(newDateTime);
     auto time = date::make_time(newDateTime-dp);
     auto yearMonthDay = date::year_month_day(dp);
 
+    // get info for date 
     auto year = (int)yearMonthDay.year();
     auto month = static_cast<Pinetime::Controllers::DateTime::Months>((unsigned)yearMonthDay.month());
     auto day = (unsigned)yearMonthDay.day();
     auto dayOfWeek = static_cast<Pinetime::Controllers::DateTime::Days>(date::weekday(yearMonthDay).iso_encoding());
 
+    // get time separated into hour and minute
     auto hour = time.hours().count();
     auto minute = time.minutes().count();
 
+    // build time string
     char minutesChar[3];
     sprintf(minutesChar, "%02d", static_cast<int>(minute));
 
@@ -149,6 +170,7 @@ bool Clock::Refresh() {
     char timeStr[6];
     sprintf(timeStr, "%c%c:%c%c", hoursChar[0],hoursChar[1],minutesChar[0], minutesChar[1]);
 
+    // see if time change is necesary
     if(hoursChar[0] != displayedChar[0] || hoursChar[1] != displayedChar[1] || minutesChar[0] != displayedChar[2] || minutesChar[1] != displayedChar[3]) {
       displayedChar[0] = hoursChar[0];
       displayedChar[1] = hoursChar[1];
@@ -158,6 +180,7 @@ bool Clock::Refresh() {
       lv_label_set_text(label_time, timeStr);
     }
 
+    // change year if changed
     if ((year != currentYear) || (month != currentMonth) || (dayOfWeek != currentDayOfWeek) || (day != currentDay)) {
       char dateStr[22];
       sprintf(dateStr, "%s %d %s %d", DayOfWeekToString(dayOfWeek), day, MonthToString(month), year);
@@ -171,7 +194,8 @@ bool Clock::Refresh() {
     }
   }
 
-  // TODO heartbeat = heartBeatController.GetValue();
+  // heartbeat (WIP) ---------------------------------------------------------------------------------------------------
+  // TODO: heartbeat = heartBeatController.GetValue();
   if(heartbeat.IsUpdated()) {
     char heartbeatBuffer[4];
     sprintf(heartbeatBuffer, "%d", heartbeat.Get());
@@ -181,6 +205,7 @@ bool Clock::Refresh() {
     lv_obj_align(heartbeatBpm, heartbeatValue, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
   }
 
+  // stepcounter (WIP) -------------------------------------------------------------------------------------------------
   // TODO stepCount = stepController.GetValue();
   if(stepCount.IsUpdated()) {
     char stepBuffer[5];
@@ -190,9 +215,11 @@ bool Clock::Refresh() {
     lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, -5, 0);
   }
 
+  // ens app if running is false, making clock turn off
   return running;
 }
 
+// gate date and moth from number to string
 const char *Clock::MonthToString(Pinetime::Controllers::DateTime::Months month) {
   return Clock::MonthsString[static_cast<uint8_t>(month)];
 }
@@ -201,18 +228,18 @@ const char *Clock::DayOfWeekToString(Pinetime::Controllers::DateTime::Days dayOf
   return Clock::DaysString[static_cast<uint8_t>(dayOfWeek)];
 }
 
-char const *Clock::DaysString[] = {
+char const *Clock::DaysString[] = { // string reference for dates conversion
         "",
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
+        "MON",
+        "TUE",
+        "WED",
+        "THU",
+        "FRI",
+        "SAT",
+        "SUN"
 };
 
-char const *Clock::MonthsString[] = {
+char const *Clock::MonthsString[] = { // string reference for months
         "",
         "JAN",
         "FEB",
@@ -228,6 +255,7 @@ char const *Clock::MonthsString[] = {
         "DEC"
 };
 
+// check clicks on objects
 void Clock::OnObjectEvent(lv_obj_t *obj, lv_event_t event) {
   if(obj == backgroundLabel) {
     if (event == LV_EVENT_CLICKED) {
@@ -237,8 +265,9 @@ void Clock::OnObjectEvent(lv_obj_t *obj, lv_event_t event) {
   }
 }
 
+// end app if button is pressed
 bool Clock::OnButtonPushed() {
-  running = false;
+  running = false; // app terminator on main loop
   return false;
 }
 
