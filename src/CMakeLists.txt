@@ -259,6 +259,7 @@ set(LVGL_SRC
         libs/lvgl/src/lv_objx/lv_cont.c
         libs/lvgl/src/lv_objx/lv_label.h
         libs/lvgl/src/lv_objx/lv_label.c
+        libs/lvgl/src/lv_objx/lv_table.c
         libs/lvgl/src/lv_themes/lv_theme.c
         libs/lvgl/src/lv_themes/lv_theme.h
         libs/lvgl/src/lv_themes/lv_theme_night.h
@@ -334,6 +335,7 @@ list(APPEND SOURCE_FILES
         displayapp/screens/Stopwatch.cpp
         displayapp/screens/Gauge.cpp
         displayapp/screens/InfiniPaint.cpp
+        displayapp/screens/Paddle.cpp
         displayapp/screens/DropDownDemo.cpp
         displayapp/screens/Modal.cpp
         displayapp/screens/BatteryIcon.cpp
@@ -347,6 +349,7 @@ list(APPEND SOURCE_FILES
         displayapp/screens/FirmwareValidation.cpp
         displayapp/screens/ApplicationList.cpp
         displayapp/screens/Notifications.cpp
+        displayapp/screens/Twos.cpp
         main.cpp
         drivers/St7789.cpp
         drivers/SpiNorFlash.cpp
@@ -413,9 +416,9 @@ set(INCLUDE_FILES
         displayapp/screens/Clock.h
         displayapp/screens/Tile.h
         displayapp/screens/Meter.h
-        displayapp/screens/Stopwatch.h
         displayapp/screens/Gauge.h
         displayapp/screens/InfiniPaint.h
+        displayapp/screens/Paddle.h
         displayapp/screens/DropDownDemo.h
         displayapp/screens/Modal.h
         displayapp/screens/BatteryIcon.h

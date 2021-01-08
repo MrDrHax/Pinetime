@@ -11,12 +11,14 @@
 #include "displayapp/screens/FirmwareValidation.h"
 #include "displayapp/screens/Gauge.h"
 #include "displayapp/screens/InfiniPaint.h"
+#include "displayapp/screens/Paddle.h"
+#include "displayapp/screens/Stopwatch.h"
 #include "displayapp/screens/Meter.h"
 #include "displayapp/screens/Music.h"
 #include "displayapp/screens/Notifications.h"
 #include "displayapp/screens/SystemInfo.h"
 #include "displayapp/screens/Tile.h"
-#include "displayapp/screens/Stopwatch.h"
+#include "displayapp/screens/Twos.h"
 #include "drivers/Cst816s.h"
 #include "drivers/St7789.h"
 #include "drivers/Watchdog.h"
@@ -202,8 +204,10 @@ void DisplayApp::RunningState() {
 //      case Apps::Test: currentScreen.reset(new Screens::Message(this)); break;
       case Apps::SysInfo: currentScreen.reset(new Screens::SystemInfo(this, dateTimeController, batteryController, brightnessController, bleController, watchdog)); break;
       case Apps::Meter: currentScreen.reset(new Screens::Meter(this)); break;
+      case Apps::Twos: currentScreen.reset(new Screens::Twos(this)); break;
       case Apps::Gauge: currentScreen.reset(new Screens::Gauge(this)); break;
       case Apps::Paint: currentScreen.reset(new Screens::InfiniPaint(this, lvgl)); break;
+      case Apps::Paddle: currentScreen.reset(new Screens::Paddle(this, lvgl)); break;
       case Apps::Brightness : currentScreen.reset(new Screens::Brightness(this, brightnessController)); break;
       case Apps::Music : currentScreen.reset(new Screens::Music(this, systemTask.nimble().music())); break;
       case Apps::FirmwareValidation: currentScreen.reset(new Screens::FirmwareValidation(this, validator)); break;
@@ -277,3 +281,4 @@ void DisplayApp::SetFullRefresh(DisplayApp::FullRefreshDirections direction) {
 void DisplayApp::SetTouchMode(DisplayApp::TouchModes mode) {
   touchMode = mode;
 }
+

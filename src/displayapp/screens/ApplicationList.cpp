@@ -45,7 +45,7 @@ std::unique_ptr<Screen> ApplicationList::CreateScreen1() {
           {Symbols::sun, Apps::Brightness},
           {Symbols::list, Apps::SysInfo},
           {Symbols::check, Apps::FirmwareValidation},
-          {Symbols::none, Apps::None}
+          {Symbols::clock, Apps::Stopwatch}
           }
 
 
@@ -60,8 +60,8 @@ std::unique_ptr<Screen> ApplicationList::CreateScreen2() {
            {Symbols::asterisk, Apps::Meter},
            {Symbols::paintbrush, Apps::Paint},
                   {Symbols::info, Apps::Notifications},
-                  {Symbols::clock, Apps::Stopwatch},
-                  {Symbols::none, Apps::None}
+                  {Symbols::paddle, Apps::Paddle},
+                  {"2", Apps::Twos}
           }
   };
 
@@ -81,3 +81,4 @@ std::unique_ptr<Screen> ApplicationList::CreateScreen3() {
 
   return std::unique_ptr<Screen>(new Screens::Tile(app, applications));
 }
+
