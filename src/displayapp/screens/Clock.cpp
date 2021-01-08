@@ -13,9 +13,10 @@
 #include "../DisplayApp.h"
 
 using namespace Pinetime::Applications::Screens;
-//Creo que si queremos usar otra font, simplemente las ponemos aquí
+//I think if we wnat to use a different font, we should just insert it here. 
 extern lv_font_t jetbrains_mono_extrabold_compressed;
 extern lv_font_t jetbrains_mono_bold_20;
+extern lv_font_t 
 extern lv_style_t* LabelBigStyle;
 
 
