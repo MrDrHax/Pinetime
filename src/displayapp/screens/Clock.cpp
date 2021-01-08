@@ -247,9 +247,25 @@ void Clock::OnObjectEvent(lv_obj_t *obj, lv_event_t event) {
   }
 }
 
+bool Clock::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
+  switch(event) {
+    
+    case TouchEvents::SwipeLeft:
+
+      return true;
+    case TouchEvents::SwipeRight:
+      return true;
+    case TouchEvents::SwipeDown:
+      // bring notifications
+      return false;
+    case TouchEvents::Tap:
+      return false;
+    default:
+       return false;
+  }
+}
+
 bool Clock::OnButtonPushed() {
   running = false;
   return false;
 }
-
-

@@ -36,7 +36,7 @@ namespace Pinetime {
           T value;
           bool isUpdated = true;
       };
-      class Clock : public Screen {
+      class Clock : Screen {
         public:
           Clock(DisplayApp* app,
                   Controllers::DateTime& dateTimeController,
@@ -49,6 +49,7 @@ namespace Pinetime {
           bool OnButtonPushed() override;
 
           void OnObjectEvent(lv_obj_t *pObj, lv_event_t i);
+          bool OnTouchEvent(Pinetime::Applications::TouchEvents event);
         private:
           static const char* MonthToString(Pinetime::Controllers::DateTime::Months month);
           static const char* DayOfWeekToString(Pinetime::Controllers::DateTime::Days dayOfWeek);
