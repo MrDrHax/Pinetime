@@ -84,8 +84,8 @@ Clock::Clock(DisplayApp* app,
   label_date = lv_label_create(lv_scr_act(), nullptr);
   label_date2 = lv_label_create(lv_scr_act(), nullptr);
 
-  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 0);
-  lv_obj_align(label_date2, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 10);
+  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 5, -10);
+  lv_obj_align(label_date2, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 5, 10);
 
   label_time = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
@@ -159,7 +159,7 @@ bool Clock::Refresh() { // gets called every frame
 
   // icon alligment
 
-  lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -5, 5);
+  lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -13, 10);
   lv_obj_align(batteryPlug, batteryIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
   lv_obj_align(bleIcon, batteryPlug, LV_ALIGN_OUT_LEFT_MID, -5, 0);
 
@@ -225,7 +225,7 @@ bool Clock::Refresh() { // gets called every frame
     if ((year != currentYear) || (month != currentMonth) || (dayOfWeek != currentDayOfWeek) || (day != currentDay)) {
       char dateStr[9];
       char dateStr2[6];
-      sprintf(dateStr, "%s %d", MonthToString(month), year);
+      sprintf(dateStr, "%s, %d", MonthToString(month), year);
       sprintf(dateStr2, "%s %02d", DayOfWeekToString(dayOfWeek), day);
       lv_label_set_text(label_date, dateStr);
       lv_label_set_text(label_date2, dateStr2);
@@ -254,8 +254,8 @@ bool Clock::Refresh() { // gets called every frame
     char stepBuffer[5];
     sprintf(stepBuffer, "%lu", stepCount.Get());
     lv_label_set_text(stepValue, stepBuffer);
-    lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, -5, -2);
-    lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, -5, 0);
+    lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 5, -25);
+    lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, 5, 0);
   }
 
   // ens app if running is false, making clock turn off
