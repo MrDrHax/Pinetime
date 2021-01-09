@@ -85,7 +85,7 @@ Clock::Clock(DisplayApp* app,
   label_date2 = lv_label_create(lv_scr_act(), nullptr);
 
   lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 5, 140);
-  lv_obj_align(label_date2, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 5, 180);
+  lv_obj_align(label_date2, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 5, 160);
 
   label_time = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
@@ -94,12 +94,12 @@ Clock::Clock(DisplayApp* app,
 
   // make the blank boxes
   box1 = lv_obj_create(lv_scr_act(), nullptr);
-  lv_obj_set_size(box1, 200, 15);
-  lv_obj_align(box1, NULL, LV_ALIGN_IN_TOP_MID, 0, 30);
+  lv_obj_set_size(box1, 200, 10);
+  lv_obj_align(box1, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 35);
 
   box2 = lv_obj_create(lv_scr_act(), nullptr);
-  lv_obj_set_size(box2, 200, 15);
-  lv_obj_align(box2, NULL, LV_ALIGN_IN_TOP_MID, 0, 110);
+  lv_obj_set_size(box2, 200, 10);
+  lv_obj_align(box2, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 110);
 
   // set the background button to change to other screen
   // note!!!!!! we can use this to launch the chosen app!!!!!
@@ -108,10 +108,9 @@ Clock::Clock(DisplayApp* app,
   lv_obj_set_click(backgroundLabel, true);
   lv_obj_set_event_cb(backgroundLabel, event_handler);
   lv_label_set_long_mode(backgroundLabel, LV_LABEL_LONG_CROP);
-  lv_obj_set_size(backgroundLabel, 240, 240);
-  lv_obj_set_pos(backgroundLabel, 0, 0);
-  lv_label_set_text(backgroundLabel, "");
-
+  lv_obj_set_size(backgroundLabel, 60, 60);
+  lv_obj_align(backgroundLabel, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, -40, -40);
+  lv_label_set_text(backgroundLabel, "A");
 
   heartbeatIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(heartbeatIcon, Symbols::heartBeat);
@@ -149,7 +148,7 @@ bool Clock::Refresh() { // gets called every frame
     char str[3];
 
     if (batteryPercent == 100) sprintf(str, "100");
-    else sprintf(str, "%02d%", static_cast<int>(batteryPercent));
+    else sprintf(str, "%02d%%", static_cast<int>(batteryPercent));
 
     lv_label_set_text(batteryIcon, str);
 
@@ -324,4 +323,19 @@ bool Clock::OnButtonPushed() {
   return false;
 }
 
+bool Clock::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
+  switch(event) {
+    case TouchEvents::SwipeDown:
+      // start notifications here
+      
+      return true;
+    
+    case TouchEvents::Tap:
+      // get tap
 
+      // start the countdown here
+      return true;
+    default:
+      return false;
+  }
+}
