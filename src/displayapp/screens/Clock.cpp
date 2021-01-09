@@ -103,14 +103,25 @@ Clock::Clock(DisplayApp* app,
 
   // set the background button to change to other screen
   // note!!!!!! we can use this to launch the chosen app!!!!!
+  /*
   backgroundLabel = lv_label_create(lv_scr_act(), nullptr);
   backgroundLabel->user_data = this;
   lv_obj_set_click(backgroundLabel, true);
   lv_obj_set_event_cb(backgroundLabel, event_handler);
   lv_label_set_long_mode(backgroundLabel, LV_LABEL_LONG_CROP);
   lv_obj_set_size(backgroundLabel, 60, 60);
-  lv_obj_align(backgroundLabel, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, -40, -40);
+  lv_obj_align(backgroundLabel, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, -20, -20);
   lv_label_set_text(backgroundLabel, "A");
+  lv_label_set_recolor()
+  */
+
+  backgroundLabel = lv_btn_create(lv_scr_act(), NULL);
+  lv_obj_set_event_cb(backgroundLabel, event_handler);
+  lv_obj_set_size(backgroundLabel, 60, 60);
+  lv_obj_align(backgroundLabel, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, -20, -20);
+
+  cuickAppIcon = lv_label_create(backgroundLabel, NULL);
+  lv_label_set_text(cuickAppIcon, "A");
 
   heartbeatIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(heartbeatIcon, Symbols::heartBeat);
@@ -206,7 +217,7 @@ bool Clock::Refresh() { // gets called every frame
 
     // change to AM/PM
 
-    if (hour > 12){
+    if (hour > 12 && AMPM){
       hour -= 12;
     }
 
@@ -330,10 +341,13 @@ bool Clock::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
       
       return true;
     
-    case TouchEvents::Tap:
+    case TouchEvents::LongTap:
       // get tap
 
-      // start the countdown here
+      // change to AM PM format or back
+      if (AMPM) AMPM = false;
+      else AMPM = true;
+      
       return true;
     default:
       return false;

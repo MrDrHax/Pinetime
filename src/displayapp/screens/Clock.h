@@ -85,6 +85,7 @@ namespace Pinetime {
           lv_obj_t* notificationIcon;
           lv_obj_t* box1;
           lv_obj_t* box2;
+          lv_obj_t* cuickAppIcon;
 
           Controllers::DateTime& dateTimeController;
           Controllers::Battery& batteryController;
@@ -93,6 +94,7 @@ namespace Pinetime {
 
           bool running = true;
 
+          bool AMPM = false;
       };
     }
   }
