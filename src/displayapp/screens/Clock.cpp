@@ -84,22 +84,22 @@ Clock::Clock(DisplayApp* app,
   label_date = lv_label_create(lv_scr_act(), nullptr);
   label_date2 = lv_label_create(lv_scr_act(), nullptr);
 
-  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 5, 120);
-  lv_obj_align(label_date2, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 5, 140);
+  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 5, 140);
+  lv_obj_align(label_date2, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 5, 180);
 
   label_time = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
   lv_label_set_text(label_time, "00:00"); // makes sure it is alligned in mid
-  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 70);
+  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 60);
 
   // make the blank boxes
   box1 = lv_obj_create(lv_scr_act(), nullptr);
-  lv_obj_set_size(box1, 240, 25);
-  lv_obj_align(box1, NULL, LV_ALIGN_IN_TOP_MID, 0, 40);
+  lv_obj_set_size(box1, 200, 15);
+  lv_obj_align(box1, NULL, LV_ALIGN_IN_TOP_MID, 0, 30);
 
   box2 = lv_obj_create(lv_scr_act(), nullptr);
-  lv_obj_set_size(box2, 240, 25);
-  lv_obj_align(box2, NULL, LV_ALIGN_IN_TOP_MID, 0, 100);
+  lv_obj_set_size(box2, 200, 15);
+  lv_obj_align(box2, NULL, LV_ALIGN_IN_TOP_MID, 0, 110);
 
   // set the background button to change to other screen
   // note!!!!!! we can use this to launch the chosen app!!!!!
