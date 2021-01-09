@@ -84,15 +84,16 @@ Clock::Clock(DisplayApp* app,
   label_date = lv_label_create(lv_scr_act(), nullptr);
   label_date2 = lv_label_create(lv_scr_act(), nullptr);
 
-  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 5, -10);
-  lv_obj_align(label_date2, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 5, 10);
+  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 5, 0);
+  lv_obj_align(label_date2, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 5, 20);
 
   label_time = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
   lv_label_set_text(label_time, "00:00"); // makes sure it is alligned in mid
-  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 40);
+  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 50);
 
   // set the background button to change to other screen
+  // note!!!!!! we can use this to launch the chosen app!!!!!
   backgroundLabel = lv_label_create(lv_scr_act(), nullptr);
   backgroundLabel->user_data = this;
   lv_obj_set_click(backgroundLabel, true);
@@ -159,8 +160,8 @@ bool Clock::Refresh() { // gets called every frame
 
   // icon alligment
 
-  lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -13, 10);
-  lv_obj_align(batteryPlug, batteryIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
+  lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -30, 10);
+  lv_obj_align(batteryPlug, batteryIcon, LV_ALIGN_OUT_LEFT_MID, -5, -3);
   lv_obj_align(bleIcon, batteryPlug, LV_ALIGN_OUT_LEFT_MID, -5, 0);
 
   // notifications ----------------------------------------------------------------------------------------------------
@@ -254,8 +255,8 @@ bool Clock::Refresh() { // gets called every frame
     char stepBuffer[5];
     sprintf(stepBuffer, "%lu", stepCount.Get());
     lv_label_set_text(stepValue, stepBuffer);
-    lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 5, -25);
-    lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, 5, 0);
+    lv_obj_align(stepIcon, lv_scr_act(),  LV_ALIGN_IN_BOTTOM_LEFT, 5, -21);
+    lv_obj_align(stepValue, stepIcon, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
   }
 
   // ens app if running is false, making clock turn off
