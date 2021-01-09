@@ -65,8 +65,8 @@ Clock::Clock(DisplayApp* app,
   // set icons for every item that needs one
 
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(batteryIcon, Symbols::batteryFull);
-  lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -5, 2);
+  lv_label_set_text(batteryIcon, "100");
+  lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -8, -6);
 
   batteryPlug = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(batteryPlug, Symbols::plug);
@@ -80,14 +80,19 @@ Clock::Clock(DisplayApp* app,
   lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(false));
   lv_obj_align(notificationIcon, nullptr, LV_ALIGN_IN_TOP_LEFT, 10, 0);
 
+  // date labels
   label_date = lv_label_create(lv_scr_act(), nullptr);
+  label_date2 = lv_label_create(lv_scr_act(), nullptr);
 
-  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 60);
+  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 0);
+  lv_obj_align(label_date2, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 10);
 
   label_time = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
-  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 80);
+  lv_label_set_text(label_time, "00:00"); // makes sure it is alligned in mid
+  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 40);
 
+  // set the background button to change to other screen
   backgroundLabel = lv_label_create(lv_scr_act(), nullptr);
   backgroundLabel->user_data = this;
   lv_obj_set_click(backgroundLabel, true);
@@ -100,19 +105,19 @@ Clock::Clock(DisplayApp* app,
 
   heartbeatIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(heartbeatIcon, Symbols::heartBeat);
-  lv_obj_align(heartbeatIcon, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 5, -2);
+  lv_obj_align(heartbeatIcon, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 13, -2);
 
   heartbeatValue = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(heartbeatValue, "0");
   lv_obj_align(heartbeatValue, heartbeatIcon, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
 
   heartbeatBpm = lv_label_create(lv_scr_act(), nullptr);
-  lv_label_set_text(heartbeatBpm, "BPM");
+  lv_label_set_text(heartbeatBpm, "UwUs");
   lv_obj_align(heartbeatBpm, heartbeatValue, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
 
   stepValue = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(stepValue, "0");
-  lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, -5, -2);
+  lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 5, -2);
 
   stepIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(stepIcon, Symbols::shoe);
@@ -133,7 +138,7 @@ bool Clock::Refresh() { // gets called every frame
 
     char str[3];
 
-    if (batteryPercent == 100) sprintf(str, "FUL");
+    if (batteryPercent == 100) sprintf(str, "100");
     else sprintf(str, "%02d%", static_cast<int>(batteryPercent));
 
     lv_label_set_text(batteryIcon, str);
@@ -218,10 +223,12 @@ bool Clock::Refresh() { // gets called every frame
 
     // change year if changed
     if ((year != currentYear) || (month != currentMonth) || (dayOfWeek != currentDayOfWeek) || (day != currentDay)) {
-      char dateStr[22];
-      sprintf(dateStr, "%s %d %s %d", DayOfWeekToString(dayOfWeek), day, MonthToString(month), year);
+      char dateStr[9];
+      char dateStr2[6];
+      sprintf(dateStr, "%s %d", MonthToString(month), year);
+      sprintf(dateStr2, "%s %02d", DayOfWeekToString(dayOfWeek), day);
       lv_label_set_text(label_date, dateStr);
-
+      lv_label_set_text(label_date2, dateStr2);
 
       currentYear = year;
       currentMonth = month;
