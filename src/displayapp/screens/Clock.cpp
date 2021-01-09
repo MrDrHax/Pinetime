@@ -86,7 +86,7 @@ Clock::Clock(DisplayApp* app,
 
   label_time = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
-  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 0);
+  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 80);
 
   backgroundLabel = lv_label_create(lv_scr_act(), nullptr);
   backgroundLabel->user_data = this;
@@ -130,9 +130,14 @@ bool Clock::Refresh() { // gets called every frame
   batteryPercentRemaining = batteryController.PercentRemaining();
   if (batteryPercentRemaining.IsUpdated()) { // do something if battery is changed, and change icon to resemblance percentage
     auto batteryPercent = batteryPercentRemaining.Get();
-    lv_label_set_text(batteryIcon, BatteryIcon::GetBatteryIcon(batteryPercent));
-    //Creo que si quisieramos poner el %, en vez del ícono, sería:
-    // lv_label_set_text(batteryIcon, batteryPercent); //Aunque, creo que era float, pq lo que se tiene que hacer un cambio. 
+
+    char str[3];
+
+    if (batteryPercent == 100) sprintf(str, "FUL");
+    else sprintf(str, "%02d%", static_cast<int>(batteryPercent));
+
+    lv_label_set_text(batteryIcon, str);
+
     auto isCharging = batteryController.IsCharging() || batteryController.IsPowerPresent();
     lv_label_set_text(batteryPlug, BatteryIcon::GetPlugIcon(isCharging));
   }
@@ -184,6 +189,12 @@ bool Clock::Refresh() { // gets called every frame
     // get time separated into hour and minute
     auto hour = time.hours().count();
     auto minute = time.minutes().count();
+
+    // change to AM/PM
+
+    if (hour > 12){
+      hour -= 12;
+    }
 
     // build time string
     char minutesChar[3];
