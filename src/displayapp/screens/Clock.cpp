@@ -90,7 +90,16 @@ Clock::Clock(DisplayApp* app,
   label_time = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
   lv_label_set_text(label_time, "00:00"); // makes sure it is alligned in mid
-  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 50);
+  lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 70);
+
+  // make the boxes
+  box1 = lv_obj_create(lv_scr_act(), nullptr);
+  lv_obj_set_size(box1, 240, 25);
+  lv_obj_align(box1, NULL, LV_ALIGN_IN_TOP_MID, 0, 45);
+
+  box2 = lv_obj_create(lv_scr_act(), nullptr);
+  lv_obj_set_size(box2, 240, 25);
+  lv_obj_align(box2, NULL, LV_ALIGN_IN_TOP_MID, 0, 20);
 
   // set the background button to change to other screen
   // note!!!!!! we can use this to launch the chosen app!!!!!
