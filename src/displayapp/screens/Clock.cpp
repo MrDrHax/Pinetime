@@ -22,24 +22,13 @@ extern lv_style_t* LabelBigStyle;
 
 // TODO:
 /*
-  1) make the clock align left, to make room for AM / PM labels
-    -make new labels
-    -make devider
-    -make AM/PM appear
   2) find out how to draw lines
   3) find out how to draw in different colours
     -make AM/PM labels be drawn in different shade depending on what is active
     -add orange
     -decide what other colourScheme we can make
-  4) align objects
-    -separate date into 2 objects
-    -align heartbeat and steps to left
-    -get extra steps
   5) search how to recognize different touches (like swipe or long press)
     -make swipe down oppen app (can be anyone for the timebeing)
-  6) be able to change from AM/PM to 24h clock
-    -make long press change bool
-    -make bool check AM/PM or 24h
 
   - after this, notification list will be planned
 */
@@ -220,6 +209,13 @@ bool Clock::Refresh() { // gets called every frame
     if (hour > 12 && AMPM){
       hour -= 12;
     }
+
+    // change colour of label
+
+    lv_style_t tagStyle;
+    lv_style_copy(&tagStyle, &lv_style_scr);
+
+    tagStyle.image.color = LV_COLOR_BLUE;
 
     // build time string
     char minutesChar[3];
