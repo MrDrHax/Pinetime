@@ -216,6 +216,8 @@ bool Clock::Refresh() { // gets called every frame
     lv_style_copy(&tagStyle, &lv_style_scr);
 
     tagStyle.image.color = LV_COLOR_BLUE;
+    
+    lv_obj_set_style(box1, &tagStyle);
 
     // build time string
     char minutesChar[3];
