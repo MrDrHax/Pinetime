@@ -81,14 +81,28 @@ Clock::Clock(DisplayApp* app,
   lv_label_set_text(label_time, "00:00"); // makes sure it is alligned in mid
   lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 60);
 
-  // make the blank boxes
+  // make the lines sorrounding the hour
+
+  lv_style_t tagStyle;
+  lv_style_copy(&tagStyle, &lv_style_scr);
+
+  tagStyle.body.main_color = LV_COLOR_ORANGE;
+  tagStyle.body.grad_color = LV_COLOR_ORANGE;
+  tagStyle.body.radius = 5;
+
   box1 = lv_obj_create(lv_scr_act(), nullptr);
   lv_obj_set_size(box1, 200, 10);
   lv_obj_align(box1, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 35);
+  lv_obj_set_style(box1, &tagStyle);
 
   box2 = lv_obj_create(lv_scr_act(), nullptr);
   lv_obj_set_size(box2, 200, 10);
   lv_obj_align(box2, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 110);
+  lv_obj_set_style(box2, &tagStyle);
+
+  lv_obj_refresh_style(box1);
+  lv_obj_refresh_style(box2);
+
 
   // set the background button to change to other screen
   // note!!!!!! we can use this to launch the chosen app!!!!!
@@ -103,15 +117,6 @@ Clock::Clock(DisplayApp* app,
   lv_label_set_text(backgroundLabel, "A");
   lv_label_set_recolor()
   */
-
-  lv_style_t tagStyle;
-  lv_style_copy(&tagStyle, &lv_style_scr);
-
-  tagStyle.body.main_color = LV_COLOR_ORANGE;
-  tagStyle.body.grad_color = LV_COLOR_ORANGE;
-  
-  lv_obj_set_style(box1, &tagStyle);
-  lv_obj_set_style(box2, &tagStyle);
 
   backgroundLabel = lv_btn_create(lv_scr_act(), NULL);
   lv_obj_set_event_cb(backgroundLabel, event_handler);
