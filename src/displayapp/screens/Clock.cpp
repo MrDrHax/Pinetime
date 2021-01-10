@@ -104,6 +104,15 @@ Clock::Clock(DisplayApp* app,
   lv_label_set_recolor()
   */
 
+  lv_style_t tagStyle;
+  lv_style_copy(&tagStyle, &lv_style_scr);
+
+  tagStyle.body.main_color = LV_COLOR_ORANGE;
+  tagStyle.body.grad_color = LV_COLOR_ORANGE;
+  
+  lv_obj_set_style(box1, &tagStyle);
+  lv_obj_set_style(box2, &tagStyle);
+
   backgroundLabel = lv_btn_create(lv_scr_act(), NULL);
   lv_obj_set_event_cb(backgroundLabel, event_handler);
   lv_obj_set_size(backgroundLabel, 60, 60);
@@ -212,12 +221,7 @@ bool Clock::Refresh() { // gets called every frame
 
     // change colour of label
 
-    lv_style_t tagStyle;
-    lv_style_copy(&tagStyle, &lv_style_scr);
-
-    tagStyle.image.color = LV_COLOR_BLUE;
     
-    lv_obj_set_style(box1, &tagStyle);
 
     // build time string
     char minutesChar[3];
