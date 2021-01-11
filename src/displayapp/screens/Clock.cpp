@@ -225,12 +225,6 @@ bool Clock::Refresh() { // gets called every frame
     auto hour = time.hours().count();
     auto minute = time.minutes().count();
 
-    // change to AM/PM
-
-    if (hour > 12 && AMPM){
-      hour -= 12;
-    }
-
     // change colour of label depending on time of day
 
     if (hour >= 12){
@@ -240,6 +234,12 @@ bool Clock::Refresh() { // gets called every frame
     else{
       LV_STYLE_CLOCK_BACKGROUND.body.main_color = LV_COLOR_MAKE(252, 231, 93);
       LV_STYLE_CLOCK_BACKGROUND.body.grad_color = LV_COLOR_MAKE(252, 231, 93);
+    }
+
+    // change to AM/PM
+
+    if (hour > 12 && AMPM){
+      hour -= 12;
     }
 
     lv_obj_refresh_style(box1);
