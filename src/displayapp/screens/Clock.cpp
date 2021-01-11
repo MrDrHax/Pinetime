@@ -58,22 +58,22 @@ Clock::Clock(DisplayApp* app,
   LV_STYLE_CLOCK_EXTRAS.text.color = LV_COLOR_WHITE;
 
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style(batteryIcon, &LV_STYLE_CLOCK_EXTRAS);
+  //lv_obj_set_style(batteryIcon, &LV_STYLE_CLOCK_EXTRAS);
   lv_label_set_text(batteryIcon, "100");
   lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -8, -6);
 
   batteryPlug = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style(batteryPlug, &LV_STYLE_CLOCK_EXTRAS);
+  //lv_obj_set_style(batteryPlug, &LV_STYLE_CLOCK_EXTRAS);
   lv_label_set_text(batteryPlug, Symbols::plug);
   lv_obj_align(batteryPlug, batteryIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
 
   bleIcon = lv_label_create(lv_scr_act(), nullptr);
-  lv_obj_set_style(bleIcon, &LV_STYLE_CLOCK_EXTRAS);
+  //lv_obj_set_style(bleIcon, &LV_STYLE_CLOCK_EXTRAS);
   lv_label_set_text(bleIcon, Symbols::bluetooth);
   lv_obj_align(bleIcon, batteryPlug, LV_ALIGN_OUT_LEFT_MID, -5, 0);
 
   notificationIcon = lv_label_create(lv_scr_act(), NULL);
-  lv_obj_set_style(notificationIcon, &LV_STYLE_CLOCK_EXTRAS);
+  //lv_obj_set_style(notificationIcon, &LV_STYLE_CLOCK_EXTRAS);
   lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(false));
   lv_obj_align(notificationIcon, nullptr, LV_ALIGN_IN_TOP_LEFT, 10, 0);
 

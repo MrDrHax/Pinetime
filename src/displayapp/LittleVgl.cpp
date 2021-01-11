@@ -308,18 +308,19 @@ void LittleVgl::InitThemeButton() {
 
 
   lv_style_copy(&btn_rel, &def);
-  btn_rel.body.main_color     = lv_color_hsv_to_rgb(hue, 10, 40);
-  btn_rel.body.grad_color     = lv_color_hsv_to_rgb(hue, 10, 20);
-  btn_rel.body.border.color   = lv_color_hex3(0x111);
+  btn_rel.body.main_color     = lv_color_make(227, 174, 30);
+  btn_rel.body.grad_color     = lv_color_make(222, 136, 16);
+  btn_rel.body.border.color   = lv_color_hex3(0x555);
   btn_rel.body.border.width   = 1;
   btn_rel.body.border.opa     = LV_OPA_70;
-  btn_rel.body.padding.left   = LV_DPI / 4;
-  btn_rel.body.padding.right  = LV_DPI / 4;
-  btn_rel.body.padding.top    = LV_DPI / 8;
-  btn_rel.body.padding.bottom = LV_DPI / 8;
+  btn_rel.body.radius         = 5;
+  btn_rel.body.padding.left   = 5;
+  btn_rel.body.padding.right  = 5;
+  btn_rel.body.padding.top    = 5;
+  btn_rel.body.padding.bottom = 5;
   btn_rel.body.shadow.type    = LV_SHADOW_BOTTOM;
-  btn_rel.body.shadow.color   = lv_color_hex3(0x111);
-  btn_rel.body.shadow.width   = LV_DPI / 30;
+  btn_rel.body.shadow.color   = lv_color_hex3(0xFFF);
+  btn_rel.body.shadow.width   = 3;
   btn_rel.text.color          = lv_color_hex3(0xeee);
   btn_rel.image.color         = lv_color_hex3(0xeee);
 
