@@ -53,21 +53,29 @@ Clock::Clock(DisplayApp* app,
 
   // set icons for every item that needs one
 
+  lv_style_copy(&LV_STYLE_CLOCK_EXTRAS, &lv_style_scr);
+
+  LV_STYLE_CLOCK_EXTRAS.text.color = LV_COLOR_GRAY;
+
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(batteryIcon, "100");
   lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -8, -6);
+  lv_obj_set_style(batteryIcon, &LV_STYLE_CLOCK_EXTRAS);
 
   batteryPlug = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(batteryPlug, Symbols::plug);
   lv_obj_align(batteryPlug, batteryIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
+  lv_obj_set_style(batteryPlug, &LV_STYLE_CLOCK_EXTRAS);
 
   bleIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(bleIcon, Symbols::bluetooth);
   lv_obj_align(bleIcon, batteryPlug, LV_ALIGN_OUT_LEFT_MID, -5, 0);
+  lv_obj_set_style(bleIcon, &LV_STYLE_CLOCK_EXTRAS);
 
   notificationIcon = lv_label_create(lv_scr_act(), NULL);
   lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(false));
   lv_obj_align(notificationIcon, nullptr, LV_ALIGN_IN_TOP_LEFT, 10, 0);
+  lv_obj_set_style(notificationIcon, &LV_STYLE_CLOCK_EXTRAS);
 
   // date labels
   label_date = lv_label_create(lv_scr_act(), nullptr);
@@ -83,22 +91,24 @@ Clock::Clock(DisplayApp* app,
 
   // make the lines sorrounding the hour
 
-  lv_style_t tagStyle;
-  lv_style_copy(&tagStyle, &lv_style_scr);
+  LV_COLOR_DAY = LV_COLOR_MAKE(255, 240, 199);
+  LV_COLOR_NIGHT = LV_COLOR_MAKE(163, 205, 255);
 
-  tagStyle.body.main_color = LV_COLOR_ORANGE;
-  tagStyle.body.grad_color = LV_COLOR_ORANGE;
-  tagStyle.body.radius = 5;
+  lv_style_copy(&LV_STYLE_CLOCK_BACKGROUND, &lv_style_scr);
+
+  LV_STYLE_CLOCK_BACKGROUND.body.main_color = LV_COLOR_DAY;
+  LV_STYLE_CLOCK_BACKGROUND.body.grad_color = LV_COLOR_DAY;
+  LV_STYLE_CLOCK_BACKGROUND.body.radius = 5;
 
   box1 = lv_obj_create(lv_scr_act(), nullptr);
   lv_obj_set_size(box1, 200, 10);
   lv_obj_align(box1, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 35);
-  lv_obj_set_style(box1, &tagStyle);
+  lv_obj_set_style(box1, &LV_STYLE_CLOCK_BACKGROUND);
 
   box2 = lv_obj_create(lv_scr_act(), nullptr);
   lv_obj_set_size(box2, 200, 10);
   lv_obj_align(box2, lv_scr_act(), LV_ALIGN_IN_TOP_MID, 0, 110);
-  lv_obj_set_style(box2, &tagStyle);
+  lv_obj_set_style(box2, &LV_STYLE_CLOCK_BACKGROUND);
 
   lv_obj_refresh_style(box1);
   lv_obj_refresh_style(box2);
@@ -224,9 +234,19 @@ bool Clock::Refresh() { // gets called every frame
       hour -= 12;
     }
 
-    // change colour of label
+    // change colour of label depending on time of day
 
-    
+    if (hour >= 12){
+      LV_STYLE_CLOCK_BACKGROUND.body.main_color = LV_COLOR_NIGHT;
+      LV_STYLE_CLOCK_BACKGROUND.body.grad_color = LV_COLOR_NIGHT;
+    }
+    else{
+      LV_STYLE_CLOCK_BACKGROUND.body.main_color = LV_COLOR_DAY;
+      LV_STYLE_CLOCK_BACKGROUND.body.grad_color = LV_COLOR_DAY;
+    }
+
+    lv_obj_refresh_style(box1);
+    lv_obj_refresh_style(box2);
 
     // build time string
     char minutesChar[3];

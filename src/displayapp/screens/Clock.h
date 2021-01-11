@@ -87,6 +87,12 @@ namespace Pinetime {
           lv_obj_t* box2;
           lv_obj_t* cuickAppIcon;
 
+          static lv_color_t LV_COLOR_DAY;
+          static lv_color_t LV_COLOR_NIGHT;
+
+          lv_style_t LV_STYLE_CLOCK_BACKGROUND;
+          lv_style_t LV_STYLE_CLOCK_EXTRAS;
+
           Controllers::DateTime& dateTimeController;
           Controllers::Battery& batteryController;
           Controllers::Ble& bleController;
