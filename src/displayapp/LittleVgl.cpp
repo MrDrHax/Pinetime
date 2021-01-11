@@ -595,17 +595,17 @@ void LittleVgl::InitThemeCheckBox() {
 void LittleVgl::InitThemeButtonMatrix() {
 
   lv_style_copy(&btnm_bg, theme.style.btn.rel);
-  btnm_bg.body.padding.left   = 2;
-  btnm_bg.body.padding.right  = 2;
-  btnm_bg.body.padding.top    = 2;
-  btnm_bg.body.padding.bottom = 2;
+  btnm_bg.body.padding.left   = 6;
+  btnm_bg.body.padding.right  = 6;
+  btnm_bg.body.padding.top    = 20;
+  btnm_bg.body.padding.bottom = 20;
   btnm_bg.body.padding.inner  = 0;
   btnm_bg.body.border.width   = 1;
 
   lv_style_copy(&btnm_rel, theme.style.btn.rel);
   btnm_rel.body.border.part  = LV_BORDER_FULL | LV_BORDER_INTERNAL;
   btnm_rel.body.border.width = 1;
-  btnm_rel.body.radius       = 2;
+  btnm_rel.body.radius       = 5;
 
   lv_style_copy(&btnm_pr, theme.style.btn.pr);
   btnm_pr.body.border.part  = btnm_rel.body.border.part;
