@@ -53,29 +53,29 @@ Clock::Clock(DisplayApp* app,
 
   // set icons for every item that needs one
 
-  lv_style_copy(&LV_STYLE_CLOCK_EXTRAS, &lv_style_scr);
+  lv_style_copy(&LV_STYLE_CLOCK_EXTRAS, &lv_style_plain);
 
-  LV_STYLE_CLOCK_EXTRAS.text.color = LV_COLOR_GRAY;
+  LV_STYLE_CLOCK_EXTRAS.text.color = LV_COLOR_WHITE;
 
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_set_style(batteryIcon, &LV_STYLE_CLOCK_EXTRAS);
   lv_label_set_text(batteryIcon, "100");
   lv_obj_align(batteryIcon, lv_scr_act(), LV_ALIGN_IN_TOP_RIGHT, -8, -6);
-  lv_obj_set_style(batteryIcon, &LV_STYLE_CLOCK_EXTRAS);
 
   batteryPlug = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_set_style(batteryPlug, &LV_STYLE_CLOCK_EXTRAS);
   lv_label_set_text(batteryPlug, Symbols::plug);
   lv_obj_align(batteryPlug, batteryIcon, LV_ALIGN_OUT_LEFT_MID, -5, 0);
-  lv_obj_set_style(batteryPlug, &LV_STYLE_CLOCK_EXTRAS);
 
   bleIcon = lv_label_create(lv_scr_act(), nullptr);
+  lv_obj_set_style(bleIcon, &LV_STYLE_CLOCK_EXTRAS);
   lv_label_set_text(bleIcon, Symbols::bluetooth);
   lv_obj_align(bleIcon, batteryPlug, LV_ALIGN_OUT_LEFT_MID, -5, 0);
-  lv_obj_set_style(bleIcon, &LV_STYLE_CLOCK_EXTRAS);
 
   notificationIcon = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_set_style(notificationIcon, &LV_STYLE_CLOCK_EXTRAS);
   lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(false));
   lv_obj_align(notificationIcon, nullptr, LV_ALIGN_IN_TOP_LEFT, 10, 0);
-  lv_obj_set_style(notificationIcon, &LV_STYLE_CLOCK_EXTRAS);
 
   // date labels
   label_date = lv_label_create(lv_scr_act(), nullptr);
@@ -93,8 +93,8 @@ Clock::Clock(DisplayApp* app,
 
   lv_style_copy(&LV_STYLE_CLOCK_BACKGROUND, &lv_style_scr);
 
-  LV_STYLE_CLOCK_BACKGROUND.body.main_color = LV_COLOR_MAKE(255, 240, 199);
-  LV_STYLE_CLOCK_BACKGROUND.body.grad_color = LV_COLOR_MAKE(255, 240, 199);
+  LV_STYLE_CLOCK_BACKGROUND.body.main_color = LV_COLOR_MAKE(252, 231, 93);
+  LV_STYLE_CLOCK_BACKGROUND.body.grad_color = LV_COLOR_MAKE(252, 231, 93);
   LV_STYLE_CLOCK_BACKGROUND.body.radius = 5;
 
   box1 = lv_obj_create(lv_scr_act(), nullptr);
@@ -238,8 +238,8 @@ bool Clock::Refresh() { // gets called every frame
       LV_STYLE_CLOCK_BACKGROUND.body.grad_color = LV_COLOR_MAKE(163, 205, 255);
     }
     else{
-      LV_STYLE_CLOCK_BACKGROUND.body.main_color = LV_COLOR_MAKE(255, 240, 199);
-      LV_STYLE_CLOCK_BACKGROUND.body.grad_color = LV_COLOR_MAKE(255, 240, 199);
+      LV_STYLE_CLOCK_BACKGROUND.body.main_color = LV_COLOR_MAKE(252, 231, 93);
+      LV_STYLE_CLOCK_BACKGROUND.body.grad_color = LV_COLOR_MAKE(252, 231, 93);
     }
 
     lv_obj_refresh_style(box1);
