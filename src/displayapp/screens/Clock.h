@@ -87,9 +87,6 @@ namespace Pinetime {
           lv_obj_t* box2;
           lv_obj_t* cuickAppIcon;
 
-          static lv_color_t dayStileColor;
-          static lv_color_t nightStileColor;
-
           lv_style_t LV_STYLE_CLOCK_BACKGROUND;
           lv_style_t LV_STYLE_CLOCK_EXTRAS;
 

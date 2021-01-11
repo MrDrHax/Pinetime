@@ -91,13 +91,10 @@ Clock::Clock(DisplayApp* app,
 
   // make the lines sorrounding the hour
 
-  dayStileColor = LV_COLOR_MAKE(255, 240, 199);
-  nightStileColor = LV_COLOR_MAKE(163, 205, 255);
-
   lv_style_copy(&LV_STYLE_CLOCK_BACKGROUND, &lv_style_scr);
 
-  LV_STYLE_CLOCK_BACKGROUND.body.main_color = dayStileColor;
-  LV_STYLE_CLOCK_BACKGROUND.body.grad_color = dayStileColor;
+  LV_STYLE_CLOCK_BACKGROUND.body.main_color = LV_COLOR_MAKE(255, 240, 199);
+  LV_STYLE_CLOCK_BACKGROUND.body.grad_color = LV_COLOR_MAKE(255, 240, 199);
   LV_STYLE_CLOCK_BACKGROUND.body.radius = 5;
 
   box1 = lv_obj_create(lv_scr_act(), nullptr);
@@ -237,12 +234,12 @@ bool Clock::Refresh() { // gets called every frame
     // change colour of label depending on time of day
 
     if (hour >= 12){
-      LV_STYLE_CLOCK_BACKGROUND.body.main_color = nightStileColor;
-      LV_STYLE_CLOCK_BACKGROUND.body.grad_color = nightStileColor;
+      LV_STYLE_CLOCK_BACKGROUND.body.main_color = LV_COLOR_MAKE(163, 205, 255);
+      LV_STYLE_CLOCK_BACKGROUND.body.grad_color = LV_COLOR_MAKE(163, 205, 255);
     }
     else{
-      LV_STYLE_CLOCK_BACKGROUND.body.main_color = dayStileColor;
-      LV_STYLE_CLOCK_BACKGROUND.body.grad_color = dayStileColor;
+      LV_STYLE_CLOCK_BACKGROUND.body.main_color = LV_COLOR_MAKE(255, 240, 199);
+      LV_STYLE_CLOCK_BACKGROUND.body.grad_color = LV_COLOR_MAKE(255, 240, 199);
     }
 
     lv_obj_refresh_style(box1);
