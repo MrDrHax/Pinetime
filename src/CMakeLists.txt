@@ -169,7 +169,7 @@ set(LVGL_SRC
         libs/lv_conf.h
         libs/lvgl/lvgl.h
 
-        #libs/lvgl/src/lvgl.h
+        libs/lvgl/src/lvgl.h
         libs/lvgl/src/lv_api_map.h
         libs/lvgl/src/lv_conf_internal.h
         libs/lvgl/src/lv_core/lv_disp.h
