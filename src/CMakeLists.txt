@@ -36,10 +36,12 @@ set(SDK_SOURCE_FILES
         # Base SDK
         "${NRF5_SDK_PATH}/components/boards/boards.c"
         "${NRF5_SDK_PATH}/integration/nrfx/legacy/nrf_drv_clock.c"
+        "${NRF5_SDK_PATH}/integration/nrfx/legacy/nrf_drv_clock.h"
         "${NRF5_SDK_PATH}/modules/nrfx/drivers/src/nrfx_clock.c"
         "${NRF5_SDK_PATH}/modules/nrfx/drivers/src/nrfx_gpiote.c"
         "${NRF5_SDK_PATH}/modules/nrfx/soc/nrfx_atomic.c"
         "${NRF5_SDK_PATH}/modules/nrfx/drivers/src/nrfx_saadc.c"
+        "${NRF5_SDK_PATH}/components/libraries/timer/app_timer.h"
 
         # FreeRTOS
         ${NRF5_SDK_PATH}/external/freertos/source/croutine.c
@@ -166,132 +168,180 @@ set(NIMBLE_SRC
 set(LVGL_SRC
         libs/lv_conf.h
         libs/lvgl/lvgl.h
-        libs/lvgl/src/lv_core/lv_obj.c
-        libs/lvgl/src/lv_core/lv_obj.h
-        libs/lvgl/src/lv_core/lv_group.c
-        libs/lvgl/src/lv_core/lv_group.h
-        libs/lvgl/src/lv_core/lv_disp.c
+
+        libs/lvgl/src/lvgl.h
+        libs/lvgl/src/lv_api_map.h
+        libs/lvgl/src/lv_conf_internal.h
         libs/lvgl/src/lv_core/lv_disp.h
-        libs/lvgl/src/lv_core/lv_debug.h
-        libs/lvgl/src/lv_core/lv_debug.c
-        libs/lvgl/src/lv_core/lv_indev.c
+        libs/lvgl/src/lv_core/lv_group.h
         libs/lvgl/src/lv_core/lv_indev.h
-        libs/lvgl/src/lv_core/lv_refr.c
+        libs/lvgl/src/lv_core/lv_obj.h
+        libs/lvgl/src/lv_core/lv_obj_style_dec.h
         libs/lvgl/src/lv_core/lv_refr.h
-        libs/lvgl/src/lv_core/lv_style.c
         libs/lvgl/src/lv_core/lv_style.h
-        libs/lvgl/src/lv_misc/lv_anim.c
-        libs/lvgl/src/lv_misc/lv_anim.h
-        libs/lvgl/src/lv_misc/lv_async.h
-        libs/lvgl/src/lv_misc/lv_async.c
-        libs/lvgl/src/lv_misc/lv_fs.c
-        libs/lvgl/src/lv_misc/lv_fs.h
-        libs/lvgl/src/lv_misc/lv_task.c
-        libs/lvgl/src/lv_misc/lv_task.h
-        libs/lvgl/src/lv_misc/lv_area.c
-        libs/lvgl/src/lv_misc/lv_area.h
-        libs/lvgl/src/lv_misc/lv_bidi.c
-        libs/lvgl/src/lv_misc/lv_bidi.h
-        libs/lvgl/src/lv_misc/lv_circ.c
-        libs/lvgl/src/lv_misc/lv_circ.h
-        libs/lvgl/src/lv_misc/lv_color.c
-        libs/lvgl/src/lv_misc/lv_color.h
-        libs/lvgl/src/lv_misc/lv_fs.c
-        libs/lvgl/src/lv_misc/lv_fs.h
-        libs/lvgl/src/lv_misc/lv_gc.c
-        libs/lvgl/src/lv_misc/lv_gc.h
-        libs/lvgl/src/lv_misc/lv_ll.c
-        libs/lvgl/src/lv_misc/lv_ll.h
-        libs/lvgl/src/lv_misc/lv_log.c
-        libs/lvgl/src/lv_misc/lv_log.h
-        libs/lvgl/src/lv_misc/lv_math.c
-        libs/lvgl/src/lv_misc/lv_math.h
-        libs/lvgl/src/lv_misc/lv_mem.c
-        libs/lvgl/src/lv_misc/lv_mem.h
-        libs/lvgl/src/lv_misc/lv_printf.c
-        libs/lvgl/src/lv_misc/lv_printf.h
-        libs/lvgl/src/lv_misc/lv_task.c
-        libs/lvgl/src/lv_misc/lv_task.h
-        libs/lvgl/src/lv_misc/lv_templ.c
-        libs/lvgl/src/lv_misc/lv_templ.h
-        libs/lvgl/src/lv_misc/lv_txt.c
-        libs/lvgl/src/lv_misc/lv_txt.h
-        libs/lvgl/src/lv_misc/lv_types.h
-        libs/lvgl/src/lv_misc/lv_utils.c
-        libs/lvgl/src/lv_misc/lv_utils.h
-        libs/lvgl/src/lv_draw/lv_draw.c
         libs/lvgl/src/lv_draw/lv_draw.h
-        libs/lvgl/src/lv_draw/lv_draw_arc.c
         libs/lvgl/src/lv_draw/lv_draw_arc.h
-        libs/lvgl/src/lv_draw/lv_draw_basic.c
-        libs/lvgl/src/lv_draw/lv_draw_basic.h
-        libs/lvgl/src/lv_draw/lv_draw_img.c
+        libs/lvgl/src/lv_draw/lv_draw_blend.h
         libs/lvgl/src/lv_draw/lv_draw_img.h
-        libs/lvgl/src/lv_draw/lv_draw_label.c
         libs/lvgl/src/lv_draw/lv_draw_label.h
-        libs/lvgl/src/lv_draw/lv_draw_line.c
         libs/lvgl/src/lv_draw/lv_draw_line.h
-        libs/lvgl/src/lv_draw/lv_draw_rect.c
+        libs/lvgl/src/lv_draw/lv_draw_mask.h
         libs/lvgl/src/lv_draw/lv_draw_rect.h
-        libs/lvgl/src/lv_draw/lv_draw_triangle.c
         libs/lvgl/src/lv_draw/lv_draw_triangle.h
-        libs/lvgl/src/lv_draw/lv_img_cache.c
+        libs/lvgl/src/lv_draw/lv_img_buf.h
         libs/lvgl/src/lv_draw/lv_img_cache.h
-        libs/lvgl/src/lv_draw/lv_img_decoder.c
         libs/lvgl/src/lv_draw/lv_img_decoder.h
-        libs/lvgl/src/lv_hal/lv_hal.h
-        libs/lvgl/src/lv_hal/lv_hal_disp.c
-        libs/lvgl/src/lv_hal/lv_hal_disp.h
-        libs/lvgl/src/lv_hal/lv_hal_indev.c
-        libs/lvgl/src/lv_hal/lv_hal_indev.h
-        libs/lvgl/src/lv_hal/lv_hal_tick.c
-        libs/lvgl/src/lv_hal/lv_hal_tick.h
-        libs/lvgl/src/lv_font/lv_font.c
         libs/lvgl/src/lv_font/lv_font.h
-        libs/lvgl/src/lv_font/lv_font_fmt_txt.c
         libs/lvgl/src/lv_font/lv_font_fmt_txt.h
+        libs/lvgl/src/lv_font/lv_font_loader.h
         libs/lvgl/src/lv_font/lv_symbol_def.h
-        libs/lvgl/src/lv_themes/lv_theme.c
+        libs/lvgl/src/lv_hal/lv_hal.h
+        libs/lvgl/src/lv_hal/lv_hal_disp.h
+        libs/lvgl/src/lv_hal/lv_hal_indev.h
+        libs/lvgl/src/lv_hal/lv_hal_tick.h
+        libs/lvgl/src/lv_misc/lv_anim.h
+        libs/lvgl/src/lv_misc/lv_area.h
+        libs/lvgl/src/lv_misc/lv_async.h
+        libs/lvgl/src/lv_misc/lv_bidi.h
+        libs/lvgl/src/lv_misc/lv_color.h
+        libs/lvgl/src/lv_misc/lv_debug.h
+        libs/lvgl/src/lv_misc/lv_fs.h
+        libs/lvgl/src/lv_misc/lv_gc.h
+        libs/lvgl/src/lv_misc/lv_ll.h
+        libs/lvgl/src/lv_misc/lv_log.h
+        libs/lvgl/src/lv_misc/lv_math.h
+        libs/lvgl/src/lv_misc/lv_mem.h
+        libs/lvgl/src/lv_misc/lv_printf.h
+        libs/lvgl/src/lv_misc/lv_task.h
+        libs/lvgl/src/lv_misc/lv_templ.h
+        libs/lvgl/src/lv_misc/lv_txt.h
+        libs/lvgl/src/lv_misc/lv_txt_ap.h
+        libs/lvgl/src/lv_misc/lv_types.h
+        libs/lvgl/src/lv_misc/lv_utils.h
         libs/lvgl/src/lv_themes/lv_theme.h
-        libs/lvgl/src/lv_objx/lv_btn.h
-        libs/lvgl/src/lv_objx/lv_btn.c
-        libs/lvgl/src/lv_objx/lv_cont.h
-        libs/lvgl/src/lv_objx/lv_cont.c
-        libs/lvgl/src/lv_objx/lv_label.h
-        libs/lvgl/src/lv_objx/lv_label.c
-        libs/lvgl/src/lv_objx/lv_table.c
+        libs/lvgl/src/lv_themes/lv_theme_empty.h
+        libs/lvgl/src/lv_themes/lv_theme_material.h
+        #libs/lvgl/src/lv_themes/lv_theme_mono.h
+        #libs/lvgl/src/lv_themes/lv_theme_template.h
+        libs/lvgl/src/lv_widgets/lv_arc.h
+        libs/lvgl/src/lv_widgets/lv_bar.h
+        libs/lvgl/src/lv_widgets/lv_btn.h
+        libs/lvgl/src/lv_widgets/lv_btnmatrix.h
+        libs/lvgl/src/lv_widgets/lv_calendar.h
+        libs/lvgl/src/lv_widgets/lv_canvas.h
+        libs/lvgl/src/lv_widgets/lv_chart.h
+        libs/lvgl/src/lv_widgets/lv_checkbox.h
+        libs/lvgl/src/lv_widgets/lv_cont.h
+        libs/lvgl/src/lv_widgets/lv_cpicker.h
+        libs/lvgl/src/lv_widgets/lv_dropdown.h
+        libs/lvgl/src/lv_widgets/lv_img.h
+        libs/lvgl/src/lv_widgets/lv_imgbtn.h
+        libs/lvgl/src/lv_widgets/lv_keyboard.h
+        libs/lvgl/src/lv_widgets/lv_label.h
+        libs/lvgl/src/lv_widgets/lv_led.h
+        libs/lvgl/src/lv_widgets/lv_line.h
+        libs/lvgl/src/lv_widgets/lv_linemeter.h
+        libs/lvgl/src/lv_widgets/lv_list.h
+        libs/lvgl/src/lv_widgets/lv_msgbox.h
+        libs/lvgl/src/lv_widgets/lv_objmask.h
+        libs/lvgl/src/lv_widgets/lv_objx_templ.h
+        libs/lvgl/src/lv_widgets/lv_page.h
+        libs/lvgl/src/lv_widgets/lv_roller.h
+        libs/lvgl/src/lv_widgets/lv_slider.h
+        libs/lvgl/src/lv_widgets/lv_spinbox.h
+        libs/lvgl/src/lv_widgets/lv_spinner.h
+        libs/lvgl/src/lv_widgets/lv_switch.h
+        libs/lvgl/src/lv_widgets/lv_table.h
+        libs/lvgl/src/lv_widgets/lv_tabview.h
+        libs/lvgl/src/lv_widgets/lv_textarea.h
+        libs/lvgl/src/lv_widgets/lv_tileview.h
+        libs/lvgl/src/lv_widgets/lv_win.h
+        libs/lvgl/src/lv_core/lv_disp.c
+        libs/lvgl/src/lv_core/lv_group.c
+        libs/lvgl/src/lv_core/lv_indev.c
+        libs/lvgl/src/lv_core/lv_obj.c
+        libs/lvgl/src/lv_core/lv_refr.c
+        libs/lvgl/src/lv_core/lv_style.c
+        libs/lvgl/src/lv_draw/lv_draw_arc.c
+        libs/lvgl/src/lv_draw/lv_draw_blend.c
+        libs/lvgl/src/lv_draw/lv_draw_img.c
+        libs/lvgl/src/lv_draw/lv_draw_label.c
+        libs/lvgl/src/lv_draw/lv_draw_line.c
+        libs/lvgl/src/lv_draw/lv_draw_mask.c
+        libs/lvgl/src/lv_draw/lv_draw_rect.c
+        libs/lvgl/src/lv_draw/lv_draw_triangle.c
+        libs/lvgl/src/lv_draw/lv_img_buf.c
+        libs/lvgl/src/lv_draw/lv_img_cache.c
+        libs/lvgl/src/lv_draw/lv_img_decoder.c
+        libs/lvgl/src/lv_font/lv_font.c
+        #libs/lvgl/src/lv_font/lv_font_dejavu_16_persian_hebrew.c
+        libs/lvgl/src/lv_font/lv_font_fmt_txt.c
+        libs/lvgl/src/lv_font/lv_font_loader.c
+        # LVGL Fonts
+        libs/lvgl/src/lv_font/lv_font_montserrat_14.c
+        libs/lvgl/src/lv_font/lv_font_montserrat_18.c
+        libs/lvgl/src/lv_font/lv_font_montserrat_22.c
+        libs/lvgl/src/lv_font/lv_font_montserrat_28.c
+        #
+        libs/lvgl/src/lv_hal/lv_hal_disp.c
+        libs/lvgl/src/lv_hal/lv_hal_indev.c
+        libs/lvgl/src/lv_hal/lv_hal_tick.c
+        libs/lvgl/src/lv_misc/lv_anim.c
+        libs/lvgl/src/lv_misc/lv_area.c
+        libs/lvgl/src/lv_misc/lv_async.c
+        libs/lvgl/src/lv_misc/lv_bidi.c
+        libs/lvgl/src/lv_misc/lv_color.c
+        libs/lvgl/src/lv_misc/lv_debug.c
+        libs/lvgl/src/lv_misc/lv_fs.c
+        libs/lvgl/src/lv_misc/lv_gc.c
+        libs/lvgl/src/lv_misc/lv_ll.c
+        libs/lvgl/src/lv_misc/lv_log.c
+        libs/lvgl/src/lv_misc/lv_math.c
+        libs/lvgl/src/lv_misc/lv_mem.c
+        libs/lvgl/src/lv_misc/lv_printf.c
+        libs/lvgl/src/lv_misc/lv_task.c
+        libs/lvgl/src/lv_misc/lv_templ.c
+        libs/lvgl/src/lv_misc/lv_txt.c
+        libs/lvgl/src/lv_misc/lv_txt_ap.c
+        libs/lvgl/src/lv_misc/lv_utils.c
         libs/lvgl/src/lv_themes/lv_theme.c
-        libs/lvgl/src/lv_themes/lv_theme.h
-        libs/lvgl/src/lv_themes/lv_theme_night.h
-        libs/lvgl/src/lv_themes/lv_theme_night.c
-        libs/lvgl/src/lv_objx/lv_list.c
-        libs/lvgl/src/lv_objx/lv_list.h
-        libs/lvgl/src/lv_objx/lv_tileview.c
-        libs/lvgl/src/lv_objx/lv_tileview.h
-        libs/lvgl/src/lv_objx/lv_tabview.c
-        libs/lvgl/src/lv_objx/lv_tabview.h
-        libs/lvgl/src/lv_objx/lv_btnm.c
-        libs/lvgl/src/lv_objx/lv_btnm.h
-        libs/lvgl/src/lv_objx/lv_page.c
-        libs/lvgl/src/lv_objx/lv_page.h
-        libs/lvgl/src/lv_objx/lv_img.c
-        libs/lvgl/src/lv_objx/lv_img.h
-        libs/lvgl/src/lv_objx/lv_lmeter.c
-        libs/lvgl/src/lv_objx/lv_lmeter.h
-        libs/lvgl/src/lv_objx/lv_arc.c
-        libs/lvgl/src/lv_objx/lv_arc.h
-        libs/lvgl/src/lv_objx/lv_gauge.c
-        libs/lvgl/src/lv_objx/lv_gauge.h
-        libs/lvgl/src/lv_objx/lv_mbox.c
-        libs/lvgl/src/lv_objx/lv_mbox.h
-        libs/lvgl/src/lv_objx/lv_bar.c
-        libs/lvgl/src/lv_objx/lv_bar.h
-        libs/lvgl/src/lv_objx/lv_slider.h
-        libs/lvgl/src/lv_objx/lv_slider.c
-        libs/lvgl/src/lv_objx/lv_ddlist.c
-        libs/lvgl/src/lv_objx/lv_ddlist.h
-        libs/lvgl/src/lv_objx/lv_line.c
-        libs/lvgl/src/lv_objx/lv_line.h
+        libs/lvgl/src/lv_themes/lv_theme_empty.c
+        libs/lvgl/src/lv_themes/lv_theme_material.c
+        #libs/lvgl/src/lv_themes/lv_theme_mono.c
+        #libs/lvgl/src/lv_themes/lv_theme_template.c
+        libs/lvgl/src/lv_widgets/lv_arc.c
+        libs/lvgl/src/lv_widgets/lv_bar.c
+        libs/lvgl/src/lv_widgets/lv_btn.c
+        libs/lvgl/src/lv_widgets/lv_btnmatrix.c
+        libs/lvgl/src/lv_widgets/lv_calendar.c
+        libs/lvgl/src/lv_widgets/lv_canvas.c
+        libs/lvgl/src/lv_widgets/lv_chart.c
+        libs/lvgl/src/lv_widgets/lv_checkbox.c
+        libs/lvgl/src/lv_widgets/lv_cont.c
+        libs/lvgl/src/lv_widgets/lv_cpicker.c
+        libs/lvgl/src/lv_widgets/lv_dropdown.c
+        libs/lvgl/src/lv_widgets/lv_img.c
+        libs/lvgl/src/lv_widgets/lv_imgbtn.c
+        libs/lvgl/src/lv_widgets/lv_keyboard.c
+        libs/lvgl/src/lv_widgets/lv_label.c
+        libs/lvgl/src/lv_widgets/lv_led.c
+        libs/lvgl/src/lv_widgets/lv_line.c
+        libs/lvgl/src/lv_widgets/lv_linemeter.c
+        libs/lvgl/src/lv_widgets/lv_list.c
+        libs/lvgl/src/lv_widgets/lv_msgbox.c
+        libs/lvgl/src/lv_widgets/lv_objmask.c
+        libs/lvgl/src/lv_widgets/lv_objx_templ.c
+        libs/lvgl/src/lv_widgets/lv_page.c
+        libs/lvgl/src/lv_widgets/lv_roller.c
+        libs/lvgl/src/lv_widgets/lv_slider.c
+        libs/lvgl/src/lv_widgets/lv_spinbox.c
+        libs/lvgl/src/lv_widgets/lv_spinner.c
+        libs/lvgl/src/lv_widgets/lv_switch.c
+        libs/lvgl/src/lv_widgets/lv_table.c
+        libs/lvgl/src/lv_widgets/lv_tabview.c
+        libs/lvgl/src/lv_widgets/lv_textarea.c
+        libs/lvgl/src/lv_widgets/lv_tileview.c
+        libs/lvgl/src/lv_widgets/lv_win.c
         )
 
 list(APPEND IMAGE_FILES
@@ -322,6 +372,96 @@ list(APPEND IMAGE_FILES
 
         displayapp/icons/bluetooth/os_bt_connected.c
         displayapp/icons/bluetooth/os_bt_disconnected.c
+
+        displayapp/icons/navigation/arrive-left.c
+        displayapp/icons/navigation/arrive-right.c
+        displayapp/icons/navigation/arrive-straight.c
+        displayapp/icons/navigation/arrive.c
+        displayapp/icons/navigation/close.c
+        displayapp/icons/navigation/continue-left.c
+        displayapp/icons/navigation/continue-right.c
+        displayapp/icons/navigation/continue-slight-left.c
+        displayapp/icons/navigation/continue-slight-right.c
+        displayapp/icons/navigation/continue-straight.c
+        displayapp/icons/navigation/continue-uturn.c
+        displayapp/icons/navigation/continue.c
+        displayapp/icons/navigation/depart-left.c
+        displayapp/icons/navigation/depart-right.c
+        displayapp/icons/navigation/depart-straight.c
+        displayapp/icons/navigation/end-of-road-left.c
+        displayapp/icons/navigation/end-of-road-right.c
+        displayapp/icons/navigation/ferry.c
+        displayapp/icons/navigation/flag.c
+        displayapp/icons/navigation/fork-left.c
+        displayapp/icons/navigation/fork-right.c
+        displayapp/icons/navigation/fork-slight-left.c
+        displayapp/icons/navigation/fork-slight-right.c
+        displayapp/icons/navigation/fork-straight.c
+        displayapp/icons/navigation/invalid.c
+        displayapp/icons/navigation/invalid-left.c
+        displayapp/icons/navigation/invalid-right.c
+        displayapp/icons/navigation/invalid-slight-left.c
+        displayapp/icons/navigation/invalid-slight-right.c
+        displayapp/icons/navigation/invalid-straight.c
+        displayapp/icons/navigation/invalid-uturn.c
+        displayapp/icons/navigation/merge-left.c
+        displayapp/icons/navigation/merge-right.c
+        displayapp/icons/navigation/merge-slight-left.c
+        displayapp/icons/navigation/merge-slight-right.c
+        displayapp/icons/navigation/merge-straight.c
+        displayapp/icons/navigation/new-name-left.c
+        displayapp/icons/navigation/new-name-right.c
+        displayapp/icons/navigation/new-name-sharp-left.c
+        displayapp/icons/navigation/new-name-sharp-right.c
+        displayapp/icons/navigation/new-name-slight-left.c
+        displayapp/icons/navigation/new-name-slight-right.c
+        displayapp/icons/navigation/new-name-straight.c
+        displayapp/icons/navigation/notification-left.c
+        displayapp/icons/navigation/notification-right.c
+        displayapp/icons/navigation/notification-sharp-left.c
+        displayapp/icons/navigation/notification-sharp-right.c
+        displayapp/icons/navigation/notification-slight-left.c
+        displayapp/icons/navigation/notification-slight-right.c
+        displayapp/icons/navigation/notification-straight.c
+        displayapp/icons/navigation/off-ramp-left.c
+        displayapp/icons/navigation/off-ramp-right.c
+        displayapp/icons/navigation/off-ramp-sharp-left.c
+        displayapp/icons/navigation/off-ramp-sharp-right.c
+        displayapp/icons/navigation/off-ramp-slight-left.c
+        displayapp/icons/navigation/off-ramp-slight-right.c
+        displayapp/icons/navigation/off-ramp-straight.c
+        displayapp/icons/navigation/on-ramp-left.c
+        displayapp/icons/navigation/on-ramp-right.c
+        displayapp/icons/navigation/on-ramp-sharp-left.c
+        displayapp/icons/navigation/on-ramp-sharp-right.c
+        displayapp/icons/navigation/on-ramp-slight-left.c
+        displayapp/icons/navigation/on-ramp-slight-right.c
+        displayapp/icons/navigation/on-ramp-straight.c
+        displayapp/icons/navigation/rotary.c
+        displayapp/icons/navigation/rotary-left.c
+        displayapp/icons/navigation/rotary-right.c
+        displayapp/icons/navigation/rotary-sharp-left.c
+        displayapp/icons/navigation/rotary-sharp-right.c
+        displayapp/icons/navigation/rotary-slight-left.c
+        displayapp/icons/navigation/rotary-slight-right.c
+        displayapp/icons/navigation/rotary-straight.c
+        displayapp/icons/navigation/roundabout.c
+        displayapp/icons/navigation/roundabout-left.c
+        displayapp/icons/navigation/roundabout-right.c
+        displayapp/icons/navigation/roundabout-sharp-left.c
+        displayapp/icons/navigation/roundabout-sharp-right.c
+        displayapp/icons/navigation/roundabout-slight-left.c
+        displayapp/icons/navigation/roundabout-slight-right.c
+        displayapp/icons/navigation/roundabout-straight.c
+        displayapp/icons/navigation/turn-left.c
+        displayapp/icons/navigation/turn-right.c
+        displayapp/icons/navigation/turn-sharp-left.c
+        displayapp/icons/navigation/turn-sharp-right.c
+        displayapp/icons/navigation/turn-slight-left.c
+        displayapp/icons/navigation/turn-slight-right.c
+        displayapp/icons/navigation/turn-stright.c
+        displayapp/icons/navigation/updown.c
+        displayapp/icons/navigation/uturn.c
         )
 
 list(APPEND SOURCE_FILES
@@ -333,11 +473,8 @@ list(APPEND SOURCE_FILES
         displayapp/screens/Tile.cpp
         displayapp/screens/Meter.cpp
         displayapp/screens/Stopwatch.cpp
-        displayapp/screens/Gauge.cpp
         displayapp/screens/InfiniPaint.cpp
         displayapp/screens/Paddle.cpp
-        displayapp/screens/DropDownDemo.cpp
-        displayapp/screens/Modal.cpp
         displayapp/screens/BatteryIcon.cpp
         displayapp/screens/BleIcon.cpp
         displayapp/screens/NotificationIcon.cpp
@@ -346,10 +483,12 @@ list(APPEND SOURCE_FILES
         displayapp/screens/Label.cpp
         displayapp/screens/FirmwareUpdate.cpp
         displayapp/screens/Music.cpp
+        displayapp/screens/Navigation.cpp
         displayapp/screens/FirmwareValidation.cpp
         displayapp/screens/ApplicationList.cpp
         displayapp/screens/Notifications.cpp
         displayapp/screens/Twos.cpp
+        displayapp/screens/HeartRate.cpp
         main.cpp
         drivers/St7789.cpp
         drivers/SpiNorFlash.cpp
@@ -358,6 +497,7 @@ list(APPEND SOURCE_FILES
         drivers/Watchdog.cpp
         drivers/DebugPins.cpp
         drivers/InternalFlash.cpp
+        drivers/Hrs3300.cpp
         components/battery/BatteryController.cpp
         components/ble/BleController.cpp
         components/ble/NotificationManager.cpp
@@ -371,10 +511,13 @@ list(APPEND SOURCE_FILES
         components/ble/CurrentTimeService.cpp
         components/ble/AlertNotificationService.cpp
         components/ble/MusicService.cpp
+        components/ble/NavigationService.cpp
         components/ble/BatteryInformationService.cpp
         components/ble/ImmediateAlertService.cpp
         components/ble/ServiceDiscovery.cpp
+        components/ble/HeartRateService.cpp
         components/firmwarevalidator/FirmwareValidator.cpp
+        components/motor/MotorController.cpp
         drivers/Cst816s.cpp
         FreeRTOS/port.c
         FreeRTOS/port_cmsis_systick.c
@@ -383,9 +526,16 @@ list(APPEND SOURCE_FILES
         displayapp/LittleVgl.cpp
         displayapp/fonts/jetbrains_mono_extrabold_compressed.c
         displayapp/fonts/jetbrains_mono_bold_20.c
+        displayapp/lv_pinetime_theme.c
 
         systemtask/SystemTask.cpp
         drivers/TwiMaster.cpp
+
+        heartratetask/HeartRateTask.cpp
+        components/heartrate/Ppg.cpp
+        components/heartrate/Biquad.cpp
+        components/heartrate/Ptagc.cpp
+        components/heartrate/HeartRateController.cpp
         )
 
 list(APPEND GRAPHICS_SOURCE_FILES
@@ -416,11 +566,9 @@ set(INCLUDE_FILES
         displayapp/screens/Clock.h
         displayapp/screens/Tile.h
         displayapp/screens/Meter.h
-        displayapp/screens/Gauge.h
         displayapp/screens/InfiniPaint.h
         displayapp/screens/Paddle.h
         displayapp/screens/DropDownDemo.h
-        displayapp/screens/Modal.h
         displayapp/screens/BatteryIcon.h
         displayapp/screens/BleIcon.h
         displayapp/screens/NotificationIcon.h
@@ -433,6 +581,7 @@ set(INCLUDE_FILES
         displayapp/screens/ApplicationList.h
         displayapp/Apps.h
         displayapp/screens/Notifications.h
+        displayapp/screens/HeartRate.h
         drivers/St7789.h
         drivers/SpiNorFlash.h
         drivers/SpiMaster.h
@@ -440,6 +589,7 @@ set(INCLUDE_FILES
         drivers/Watchdog.h
         drivers/DebugPins.h
         drivers/InternalFlash.h
+        drivers/Hrs3300.h
         components/battery/BatteryController.h
         components/ble/BleController.h
         components/ble/NotificationManager.h
@@ -455,6 +605,7 @@ set(INCLUDE_FILES
         components/ble/ImmediateAlertService.h
         components/ble/ServiceDiscovery.h
         components/ble/BleClient.h
+        components/ble/HeartRateService.h.h
         drivers/Cst816s.h
         FreeRTOS/portmacro.h
         FreeRTOS/portmacro_cmsis.h
@@ -467,10 +618,17 @@ set(INCLUDE_FILES
         libs/date/includes/date/ptz.h
         libs/date/includes/date/tz_private.h
         displayapp/LittleVgl.h
+        displayapp/lv_pinetime_theme.h
         systemtask/SystemTask.h
         systemtask/SystemMonitor.h
         displayapp/screens/Symbols.h
         drivers/TwiMaster.h
+        heartratetask/HeartRateTask.h
+        components/heartrate/Ppg.h
+        components/heartrate/Biquad.h
+        components/heartrate/Ptagc.h
+        components/heartrate/HeartRateController.h
+        components/motor/MotorController.h
         )
 
 include_directories(
@@ -502,7 +660,7 @@ include_directories(
         "${NRF5_SDK_PATH}/modules/nrfx/drivers/include"
         "${NRF5_SDK_PATH}/modules/nrfx/hal"
         "${NRF5_SDK_PATH}/modules/nrfx/mdk"
-        ${NRF5_SDK_PATH}/external/freertos/source/include
+        "${NRF5_SDK_PATH}/external/freertos/source/include"
         "${NRF5_SDK_PATH}/components/toolchain/cmsis/include"
         "${NRF5_SDK_PATH}/components/libraries/atomic"
         "${NRF5_SDK_PATH}/components/libraries/atomic_fifo"
@@ -721,7 +879,7 @@ if (USE_JLINK)
             COMMAND ${NRFJPROG} --program ${EXECUTABLE_FILE_NAME}.hex -f ${NRF_TARGET} --sectorerase
             COMMAND sleep 0.5s
             COMMAND ${NRFJPROG} --reset -f ${NRF_TARGET}
-            COMMENT "flashing ${EXECUTABLE_NAME}.hex"
+            COMMENT "flashing ${EXECUTABLE_FILE_NAME}.hex"
             )
 
 elseif (USE_GDB_CLIENT)
@@ -731,8 +889,8 @@ elseif (USE_GDB_CLIENT)
             )
     add_custom_target("FLASH_${EXECUTABLE_NAME}"
             DEPENDS ${EXECUTABLE_NAME}
-            COMMAND ${GDB_CLIENT_BIN_PATH} -nx --batch -ex 'target extended-remote ${GDB_CLIENT_TARGET_REMOTE}' -ex 'monitor swdp_scan' -ex 'attach 1' -ex 'load' -ex 'kill' ${EXECUTABLE_NAME}.hex
-            COMMENT "flashing ${EXECUTABLE_NAME}.hex"
+            COMMAND ${GDB_CLIENT_BIN_PATH} -nx --batch -ex 'target extended-remote ${GDB_CLIENT_TARGET_REMOTE}' -ex 'monitor swdp_scan' -ex 'attach 1' -ex 'load' -ex 'kill' ${EXECUTABLE_FILE_NAME}.hex
+            COMMENT "flashing ${EXECUTABLE_FILE_NAME}.hex"
             )
 elseif (USE_OPENOCD)
     if (USE_CMSIS_DAP)
@@ -757,10 +915,10 @@ elseif (USE_OPENOCD)
                 -c 'transport select swd'
                 -c 'source [find target/nrf52.cfg]'
                 -c 'halt'
-                -c "program \"${EXECUTABLE_NAME}.hex\""
+                -c "program \"${EXECUTABLE_FILE_NAME}.hex\""
                 -c 'reset'
                 -c 'shutdown'
-                COMMENT "flashing ${EXECUTABLE_NAME}.hex"
+                COMMENT "flashing ${EXECUTABLE_BIN_NAME}.hex"
                 )
     else ()
         add_custom_target(FLASH_ERASE
@@ -769,8 +927,8 @@ elseif (USE_OPENOCD)
                 )
         add_custom_target("FLASH_${EXECUTABLE_NAME}"
                 DEPENDS ${EXECUTABLE_NAME}
-                COMMAND ${OPENOCD_BIN_PATH} -c "tcl_port disabled" -c "gdb_port 3333" -c "telnet_port 4444" -f interface/stlink.cfg -c 'transport select hla_swd' -f target/nrf52.cfg -c "program \"${EXECUTABLE_NAME}.hex\"" -c reset -c shutdown
-                COMMENT "flashing ${EXECUTABLE_NAME}.hex"
+                COMMAND ${OPENOCD_BIN_PATH} -c "tcl_port disabled" -c "gdb_port 3333" -c "telnet_port 4444" -f interface/stlink.cfg -c 'transport select hla_swd' -f target/nrf52.cfg -c "program \"${EXECUTABLE_FILE_NAME}.hex\"" -c reset -c shutdown
+                COMMENT "flashing ${EXECUTABLE_FILE_NAME}.hex"
                 )
     endif ()
 endif ()

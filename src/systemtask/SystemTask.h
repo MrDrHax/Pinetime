@@ -5,11 +5,14 @@
 #include <FreeRTOS.h>
 #include <task.h>
 #include <timers.h>
+#include <heartratetask/HeartRateTask.h>
+#include <components/heartrate/HeartRateController.h>
 
 #include "SystemMonitor.h"
 #include "components/battery/BatteryController.h"
 #include "components/ble/NimbleController.h"
 #include "components/ble/NotificationManager.h"
+#include "components/motor/MotorController.h"
 #include "displayapp/DisplayApp.h"
 #include "drivers/Watchdog.h"
 
@@ -20,11 +23,12 @@ namespace Pinetime {
     class SpiNorFlash;
     class St7789;
     class TwiMaster;
+    class Hrs3300;
   }
   namespace System {
     class SystemTask {
       public:
-        enum class Messages {GoToSleep, GoToRunning, OnNewTime, OnNewNotification, BleConnected,
+        enum class Messages {GoToSleep, GoToRunning, OnNewTime, OnNewNotification, OnNewCall, BleConnected,
             BleFirmwareUpdateStarted, BleFirmwareUpdateFinished, OnTouchEvent, OnButtonEvent, OnDisplayTaskSleeping
         };
 
@@ -34,7 +38,8 @@ namespace Pinetime {
                    Components::LittleVgl &lvgl,
                    Controllers::Battery &batteryController, Controllers::Ble &bleController,
                    Controllers::DateTime &dateTimeController,
-                   Pinetime::Controllers::NotificationManager& manager);
+                   Pinetime::Controllers::MotorController& motorController,
+                   Pinetime::Drivers::Hrs3300& heartRateSensor);
 
 
         void Start();
@@ -58,6 +63,9 @@ namespace Pinetime {
         Pinetime::Components::LittleVgl& lvgl;
         Pinetime::Controllers::Battery& batteryController;
         std::unique_ptr<Pinetime::Applications::DisplayApp> displayApp;
+        Pinetime::Controllers::HeartRateController heartRateController;
+        std::unique_ptr<Pinetime::Applications::HeartRateTask> heartRateApp;
+
         Pinetime::Controllers::Ble& bleController;
         Pinetime::Controllers::DateTime& dateTimeController;
         QueueHandle_t systemTasksMsgQueue;
@@ -66,9 +74,10 @@ namespace Pinetime {
         std::atomic<bool> isWakingUp{false};
         Pinetime::Drivers::Watchdog watchdog;
         Pinetime::Drivers::WatchdogView watchdogView;
-        Pinetime::Controllers::NotificationManager& notificationManager;
+        Pinetime::Controllers::NotificationManager notificationManager;
+        Pinetime::Controllers::MotorController& motorController;
+        Pinetime::Drivers::Hrs3300& heartRateSensor;
         Pinetime::Controllers::NimbleController nimbleController;
-
 
         static constexpr uint8_t pinSpiSck = 2;
         static constexpr uint8_t pinSpiMosi = 3;
