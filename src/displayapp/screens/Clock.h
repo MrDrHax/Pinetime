@@ -42,7 +42,8 @@ namespace Pinetime {
                   Controllers::DateTime& dateTimeController,
                   Controllers::Battery& batteryController,
                   Controllers::Ble& bleController,
-                  Controllers::NotificationManager& notificatioManager);
+                  Controllers::NotificationManager& notificatioManager,
+                  Controllers::HeartRateController& heartRateController);
           ~Clock() override;
 
           bool Refresh() override;
