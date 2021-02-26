@@ -167,7 +167,7 @@ Stopwatch::Stopwatch(DisplayApp* app,
 
     label_time = lv_label_create(lv_scr_act(), nullptr);
     lv_label_set_text(label_time, "00");
-    lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
+    //lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
     lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
 
     label_info = lv_label_create(lv_scr_act(), nullptr);
@@ -177,7 +177,7 @@ Stopwatch::Stopwatch(DisplayApp* app,
     label_extra = lv_label_create(lv_scr_act(), nullptr);
     lv_label_set_text(label_extra, "");
     lv_obj_align(label_extra, lv_scr_act(), LV_ALIGN_CENTER, 0, label_extra_offset);
-    lv_label_set_style(label_extra, LV_LABEL_STYLE_MAIN, LabelBigStyle);
+    //lv_label_set_style(label_extra, LV_LABEL_STYLE_MAIN, LabelBigStyle);
 
     // set images
     img_clock0.header.always_zero = 0; //Initialization
