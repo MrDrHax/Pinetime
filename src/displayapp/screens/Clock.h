@@ -6,7 +6,7 @@
 #include <memory>
 #include "Screen.h"
 #include "components/datetime/DateTimeController.h"
-
+// comment
 namespace Pinetime {
   namespace Controllers {
     class Battery;
